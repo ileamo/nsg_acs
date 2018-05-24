@@ -16,10 +16,20 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.nsg.ru">NSG</a></li>
           </ul>
         </nav>
-        <span class="logo"></span>
+
+            <td style="width:15%; background-color:#4070a0; border-style:none; text-align:center; padding:0;">
+              <div style="height:6em;">
+              <a href="http://www.nsg.ru/index.php"><img class="center" src="/images/nsg_logo.svg" style="max-height:100%; max-width:100%;" alt="NSG logo" onerror="this.src='/images/nsg_logo.png'; this.onerror=null;"></a>
+              </div>
+            </td>
+            <td style="width:85%; background-color:#4070a0; border-style:none; text-align:center; padding:0;">
+              <div style="height:5em;">
+                <a href="http://www.nsg.ru/index.php"><img class="center" src="/images/nsg_title.svg" style="max-height:100%; max-width:100%;" alt="NSG heading" onerror="this.src='/images/nsg_title.png'; this.onerror=null;"></a>
+              </div>
+            </td>
+
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
