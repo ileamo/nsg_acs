@@ -19,6 +19,7 @@ defmodule NsgAcsWeb.Router do
 
     get("/", PageController, :index)
     resources("/groups", GroupController)
+    resources("/devices", DeviceController)
   end
 
   # Other scopes may use custom stacks.

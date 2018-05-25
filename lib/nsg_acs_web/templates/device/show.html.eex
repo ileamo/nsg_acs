@@ -1,0 +1,18 @@
+<h2>Show Device</h2>
+
+<ul>
+
+  <li>
+    <strong>Key:</strong>
+    <%= @device.key %>
+  </li>
+
+  <li>
+    <strong>Params:</strong>
+    <%= @device.params %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: device_path(@conn, :edit, @device) %></span>
+<span><%= link "Back", to: device_path(@conn, :index) %></span>
