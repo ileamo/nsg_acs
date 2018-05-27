@@ -14,7 +14,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 First, you need to install the required NPM packages in the `assets` directory:
 
 ```
-cd phx_gentelella
+cd assets
 ```
 
 The install the plug-ins required for Brunch:
@@ -90,4 +90,13 @@ exports.config = {
       bootstrap: 'bootstrap-sass'
     }
   }
+```
+
+Then, make your `css/app.scss` look like this:
+
+```scss
+$icon-font-path: "/fonts/";
+
+@import "bootstrap";
+@import "font-awesome";
 ```
