@@ -3,24 +3,12 @@ exports.config = {
   files: {
     javascripts: {
       joinTo: "js/app.js"
-
-      // To use a separate vendor.js bundle, specify two files path
-      // http://brunch.io/docs/config#-files-
-      // joinTo: {
-      //   "js/app.js": /^js/,
-      //   "js/vendor.js": /^(?!js)/
-      // }
-      //
-      // To change the order of concatenation of files, explicitly mention here
-      // order: {
-      //   before: [
-      //     "vendor/js/jquery-2.1.1.js",
-      //     "vendor/js/bootstrap.min.js"
-      //   ]
-      // }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: "css/app.css",
+      order: {
+        after: ["web/static/css/app.scss"]
+      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -47,6 +35,19 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/]
+    },
+    copycat: {
+      // fonts got to /priv/static/fonts
+      "fonts": ["node_modules/bootstrap-sass/assets/fonts/bootstrap",
+                "node_modules/font-awesome/fonts"]
+    },
+    sass: {
+      options: {
+        // tell sass-brunch where to look for @imports
+        includePaths: ["node_modules/bootstrap-sass/assets/stylesheets",
+                       "node_modules/font-awesome/scss"],
+        precision: 8
+      }
     }
   },
 
@@ -57,6 +58,14 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery',
+      bootstrap: 'bootstrap-sass'
+    },
+    styles: {
+      "animate.css": ["animate.css"]
+    }
   }
 };
