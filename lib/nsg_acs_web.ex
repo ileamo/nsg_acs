@@ -28,8 +28,9 @@ defmodule NsgAcsWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/nsg_acs_web/templates",
-                        namespace: NsgAcsWeb
+      use Phoenix.View,
+        root: "lib/nsg_acs_web/templates",
+        namespace: NsgAcsWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -40,6 +41,10 @@ defmodule NsgAcsWeb do
       import NsgAcsWeb.Router.Helpers
       import NsgAcsWeb.ErrorHelpers
       import NsgAcsWeb.Gettext
+
+      def render_shared(template, assigns \\ []) do
+        render(NsgAcsWeb.SharedView, template, assigns)
+      end
     end
   end
 
