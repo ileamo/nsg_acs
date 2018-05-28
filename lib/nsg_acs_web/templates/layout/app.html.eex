@@ -18,8 +18,9 @@
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              nav_title
+
+            <div >
+              <img src="images/nsg_logo.svg" class="nsg-logo">
             </div>
 
             <div class="clearfix"></div>
