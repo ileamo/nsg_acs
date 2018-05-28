@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>NSG autoconfig server</title>
+    <title>NSG autoconfig server | </title>
+
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
-  <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-          </ul>
-        </nav>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              nav_title
+              <!--
+              <%= link to: page_path(@conn, :index), class: "site_title" do %>
+                <i class="fa fa-paw"></i>
+                <span>NSG nav_title</span>
+              <% end %>
+            -->
+            </div>
 
-            <td style="width:15%; background-color:#4070a0; border-style:none; text-align:center; padding:0;">
-              <div style="height:6em;">
-              <a href="http://www.nsg.ru/index.php"><img class="center" src="/images/nsg_logo.svg" style="max-height:100%; max-width:100%;" alt="NSG logo" onerror="this.src='/images/nsg_logo.png'; this.onerror=null;"></a>
-              </div>
-            </td>
-            <td style="width:85%; background-color:#4070a0; border-style:none; text-align:center; padding:0;">
-              <div style="height:5em;">
-                <a href="http://www.nsg.ru/index.php"><img class="center" src="/images/nsg_title.svg" style="max-height:100%; max-width:100%;" alt="NSG heading" onerror="this.src='/images/nsg_title.png'; this.onerror=null;"></a>
-              </div>
-            </td>
+            <div class="clearfix"></div>
 
-      </header>
+            <!-- sidebar menu -->
+            <%= render_shared "_sidebar.html", conn: @conn %>
+            <!-- /sidebar menu -->
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+          </div>
+        </div>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <%= render @view_module, @view_template, assigns %>
+        </div>
+        <!-- /page content -->
 
-    </div> <!-- /container -->
+      </div>
+    </div>
+
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
