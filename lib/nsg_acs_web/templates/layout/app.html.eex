@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>NSG autoconfig server | </title>
+    <title>NSG autoconfig server</title>
 
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
@@ -20,12 +20,6 @@
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
               nav_title
-              <!--
-              <%= link to: page_path(@conn, :index), class: "site_title" do %>
-                <i class="fa fa-paw"></i>
-                <span>NSG nav_title</span>
-              <% end %>
-            -->
             </div>
 
             <div class="clearfix"></div>
