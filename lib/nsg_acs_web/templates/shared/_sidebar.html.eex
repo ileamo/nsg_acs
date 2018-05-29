@@ -7,6 +7,17 @@
           Dasahboard
         </ul>
       </li>
+      <li><a><i class="fa fa-table"></i> Таблицы <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li>
+            <%= link "Группы", to: group_path(@conn, :index) %>
+          </li>
+          <li>
+            <%= link "Устройства", to: device_path(@conn, :index) %>
+          </li>
+        </ul>
+      </li>
+
     </ul>
   </div>
   <div class="menu_section">
