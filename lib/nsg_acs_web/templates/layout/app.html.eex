@@ -20,7 +20,9 @@
           <div class="left_col scroll-view">
 
             <div >
-              <img src="images/nsg_logo.svg" class="nsg-logo">
+              <a href="http://nsg.ru/index.php">
+                <img src="images/nsg_logo.svg" class="nsg-logo">
+              </a>
             </div>
 
             <div class="clearfix"></div>
