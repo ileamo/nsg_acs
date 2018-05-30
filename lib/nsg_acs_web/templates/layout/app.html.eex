@@ -34,6 +34,10 @@
           </div>
         </div>
 
+        <!-- top navigation -->
+        <%= render_shared "_top_navigation.html", conn: @conn %>
+        <!-- /top navigation -->
+
         <!-- page content -->
         <div class="right_col" role="main">
           <%= render @view_module, @view_template, assigns %>
