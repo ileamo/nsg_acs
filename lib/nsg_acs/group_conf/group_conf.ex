@@ -106,10 +106,13 @@ defmodule NsgAcs.GroupConf do
     ~r/\$\((\w[\w\d_]*)=?([^\)]*)\)/
     |> Regex.scan(tp)
     |> Enum.group_by(fn [_, x, _] -> x end, fn [_, _, x] -> x end)
-    |> Enum.map(fn {k, v} ->
-      {k, Enum.max_by(v, &num_of_delimiter/1) |> String.split("|", trim: true)}
-    end)
+    |> Enum.map(fn {k, v} -> {k, extract_defaults(v)} end)
     |> Enum.into(%{})
+  end
+
+  defp extract_defaults(v) do
+    Enum.max_by(v, &num_of_delimiter/1)
+    |> String.split("|", trim: true)
   end
 
   defp num_of_delimiter(str) do
