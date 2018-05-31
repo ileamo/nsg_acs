@@ -30,6 +30,7 @@
               <tr>
                 <th>Имя группы</th>
                 <th>Шаблон</th>
+                <th>Параметры</th>
                 <th>Действия</th>
               </tr>
             </thead>
@@ -40,10 +41,11 @@
                     <%= group.name %>
                   </td>
                   <td>
-                    <% tmpl = group.template |> String.slice(0, 16) |> Kernel.<>(" ...") %>
-                    <%= link tmpl, to: group_path(@conn, :show, group) %>
+                    <%= link group.template |> str_head(16), to: group_path(@conn, :show, group) %>
                   </td>
-
+                  <td>
+                    <%= group.template |> get_params %>
+                  </td>
                   <td class="text-right">
                     <%= link "Show", to: group_path(@conn, :show, group) %>
                     <%= link "Edit", to: group_path(@conn, :edit, group) %>
