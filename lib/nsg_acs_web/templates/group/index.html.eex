@@ -6,6 +6,8 @@
         <div class="x_title">
           <h2>Группы устройств</h2>
           <ul class="nav navbar-right panel_toolbox">
+            <li><%= link "Новая группа", to: group_path(@conn, :new), style: "color: #73879C"%>
+            </li>
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
             <li class="dropdown">
@@ -59,5 +61,3 @@
     </div>
   </div>
 </div>
-
-<span><%= link "New Group", to: group_path(@conn, :new) %></span>
