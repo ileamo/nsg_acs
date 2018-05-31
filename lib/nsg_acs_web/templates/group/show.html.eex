@@ -9,7 +9,9 @@
 
   <li>
     <strong>Template:</strong>
-    <%= @group.template %>
+    <pre><code>
+      <%= @group.template %>
+    </code></pre>
   </li>
 
 </ul>

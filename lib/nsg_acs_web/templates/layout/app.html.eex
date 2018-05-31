@@ -21,7 +21,7 @@
 
             <div >
               <a href="http://nsg.ru/index.php">
-                <img src="images/nsg_logo.svg" class="nsg-logo">
+                <img src="/images/nsg_logo.svg" class="nsg-logo">
               </a>
             </div>
 
