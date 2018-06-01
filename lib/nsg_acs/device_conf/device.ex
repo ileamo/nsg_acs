@@ -2,11 +2,10 @@ defmodule NsgAcs.DeviceConf.Device do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "devices" do
     field :key, :string
     field :params, :map
-    field :group_id, :id
+    belongs_to :group, NsgAcs.GroupConf.Group
 
     timestamps()
   end

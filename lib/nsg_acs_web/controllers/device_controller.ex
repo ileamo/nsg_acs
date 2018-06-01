@@ -20,6 +20,7 @@ defmodule NsgAcsWeb.DeviceController do
         conn
         |> put_flash(:info, "Device created successfully.")
         |> redirect(to: device_path(conn, :show, device))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +45,7 @@ defmodule NsgAcsWeb.DeviceController do
         conn
         |> put_flash(:info, "Device updated successfully.")
         |> redirect(to: device_path(conn, :show, device))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", device: device, changeset: changeset)
     end

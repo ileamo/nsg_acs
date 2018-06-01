@@ -29,7 +29,6 @@
             <thead>
               <tr>
                 <th>Имя группы</th>
-                <th>Шаблон</th>
                 <th>Параметры</th>
                 <th>Действия</th>
               </tr>
@@ -41,15 +40,13 @@
                     <%= group.name %>
                   </td>
                   <td>
-                    <%= link group.template |> str_head(16), to: group_path(@conn, :show, group) %>
-                  </td>
-                  <td>
                     <%= group.template |> get_params %>
                   </td>
                   <td class="text-right">
-                    <%= link "Show", to: group_path(@conn, :show, group) %>
-                    <%= link "Edit", to: group_path(@conn, :edit, group) %>
-                    <%= link "Delete", to: group_path(@conn, :delete, group), method: :delete, data: [confirm: "Are you sure?"], style: "color: #B74718;" %>
+                    <%= link "Добавить устройство", to: device_path(@conn, :new) %>
+                    <%= link "Показать", to: group_path(@conn, :show, group) %>
+                    <%= link "Редактировать", to: group_path(@conn, :edit, group) %>
+                    <%= link "Удалить", to: group_path(@conn, :delete, group), method: :delete, data: [confirm: "Are you sure?"], style: "color: #B74718;" %>
                   </td>
                 </tr>
                 <% end %>
