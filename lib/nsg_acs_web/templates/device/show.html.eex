@@ -3,8 +3,13 @@
 <ul>
 
   <li>
-    <strong>Key:</strong>
+    <strong>Ключ:</strong>
     <%= @device.key %>
+  </li>
+
+  <li>
+    <strong>Группа:</strong>
+    <%= @device.group.name %>
   </li>
 
   <li>

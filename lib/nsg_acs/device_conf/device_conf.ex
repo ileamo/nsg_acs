@@ -18,7 +18,9 @@ defmodule NsgAcs.DeviceConf do
 
   """
   def list_devices do
-    Repo.all(Device)
+    Device
+    |> Repo.all()
+    |> Repo.preload(:group)
   end
 
   @doc """
@@ -35,7 +37,11 @@ defmodule NsgAcs.DeviceConf do
       ** (Ecto.NoResultsError)
 
   """
-  def get_device!(id), do: Repo.get!(Device, id)
+  def get_device!(id) do
+    Device
+    |> Repo.get!(id)
+    |> Repo.preload(:group)
+  end
 
   @doc """
   Creates a device.
