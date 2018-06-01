@@ -9,7 +9,7 @@
 
   <li>
     <strong>Params:</strong>
-    <%= @device.params %>
+    <%= "@device.params" %>
   </li>
 
 </ul>

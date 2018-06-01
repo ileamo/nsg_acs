@@ -9,9 +9,9 @@ defmodule NsgAcsWeb.DeviceController do
     render(conn, "index.html", devices: devices)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"group_id" => group_id}) do
     changeset = DeviceConf.change_device(%Device{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, group_id: group_id)
   end
 
   def create(conn, %{"device" => device_params}) do
