@@ -43,10 +43,10 @@
                     <%= group.template |> get_params %>
                   </td>
                   <td class="text-right">
-                    <%= link "Добавить устройство", to: device_path(@conn, :new, group_id: group.id, group_name: group.name) %>
-                    <%= link "Показать", to: group_path(@conn, :show, group) %>
-                    <%= link "Редактировать", to: group_path(@conn, :edit, group) %>
-                    <%= link "Удалить", to: group_path(@conn, :delete, group), method: :delete, data: [confirm: "Are you sure?"], style: "color: #B74718;" %>
+                    <%= link "Добавить устройство", to: device_path(@conn, :new, group_id: group.id, group_name: group.name), class: "btn btn-default btn-xs"  %>
+                    <%= link "Показать", to: group_path(@conn, :show, group), class: "btn btn-default btn-xs" %>
+                    <%= link "Редактировать", to: group_path(@conn, :edit, group), class: "btn btn-default btn-xs"  %>
+                    <%= link "Удалить", to: group_path(@conn, :delete, group), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
                   </td>
                 </tr>
                 <% end %>
