@@ -34,7 +34,7 @@ defmodule NsgAcsWeb.DeviceController do
   def edit(conn, %{"id" => id}) do
     device = DeviceConf.get_device!(id)
     changeset = DeviceConf.change_device(device)
-    render(conn, "edit.html", device: device, changeset: changeset)
+    render(conn, "edit.html", device: device, changeset: changeset, group_id: device.group.id)
   end
 
   def update(conn, %{"id" => id, "device" => device_params}) do
