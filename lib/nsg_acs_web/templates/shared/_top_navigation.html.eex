@@ -5,8 +5,12 @@
       <div class="nav toggle">
         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
       </div>
-
     </nav>
+
+    <p> test </p>
+    <p> <%= get_flash(@conn,:info)%></p>
+    <p> <%= get_flash(@conn, :error) %></p>
+
   </div>
 </div>
 <!-- /top navigation -->

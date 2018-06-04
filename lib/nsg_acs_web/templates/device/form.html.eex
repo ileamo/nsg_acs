@@ -13,6 +13,22 @@
     <%= error_tag f, :key %>
   </div>
 
+  <div class="clearfix"></div>
+
+  <h2> Параметры: </h2>
+
+  <div class="form-group">
+    <%= label f, ":macro1", class: "control-label" %>
+    <%= text_input f, :macro1, class: "form-control" %>
+    <%= error_tag f, :key %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, ":macro2", class: "control-label" %>
+    <%= text_input f, :macro2, class: "form-control" %>
+    <%= error_tag f, :key %>
+  </div>
+
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
