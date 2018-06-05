@@ -7,9 +7,6 @@
       </div>
     </nav>
 
-    <p> test </p>
-    <p> <%= get_flash(@conn,:info)%></p>
-    <p> <%= get_flash(@conn, :error) %></p>
 
   </div>
 </div>
