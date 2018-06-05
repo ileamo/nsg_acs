@@ -42,8 +42,9 @@
                   <td>
                     <%= device.group.name %>
                   </td>
+
                   <td>
-                    <%= "device.params" %>
+                    <%= param_list(device.params) %>
                   </td>
 
                   <td class="text-right">

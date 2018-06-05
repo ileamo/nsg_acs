@@ -14,10 +14,12 @@
 
   <h2> Параметры: </h2>
 
+  <%= for {k, v} <- @device.params do %>
   <li>
-    <strong>Params:</strong>
-    <%= "@device.params" %>
+    <strong><%= k %>:</strong>
+    <%= v %>
   </li>
+  <% end %>
 
 </ul>
 
