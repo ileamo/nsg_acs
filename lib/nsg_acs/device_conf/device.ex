@@ -3,7 +3,7 @@ defmodule NsgAcs.DeviceConf.Device do
   import Ecto.Changeset
 
   schema "devices" do
-    field :key, :string
+    field :key, :string, default: "NSG0000_0000000000"
     field :params, :map
     belongs_to :group, NsgAcs.GroupConf.Group
 
