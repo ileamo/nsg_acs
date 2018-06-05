@@ -3,6 +3,7 @@ defmodule NsgAcsWeb.DeviceController do
 
   alias NsgAcs.DeviceConf
   alias NsgAcs.DeviceConf.Device
+  alias NsgAcs.GroupConf
 
   def index(conn, _params) do
     devices = DeviceConf.list_devices()
@@ -11,18 +12,22 @@ defmodule NsgAcsWeb.DeviceController do
 
   def new(conn, %{"group_id" => group_id}) do
     changeset = DeviceConf.change_device(%Device{})
-    render(conn, "new.html", changeset: changeset, group_id: group_id)
+    group = GroupConf.get_group!(group_id)
+    params = GroupConf.get_params_from_template(group.template)
+    render(conn, "new.html", changeset: changeset, group_id: group_id, params: params)
   end
 
-  def create(conn, %{"device" => device_params}) do
-    case DeviceConf.create_device(device_params) do
+  def create(conn, %{"device" => device, "params" => params}) do
+    device = Map.put(device, "params", params)
+
+    case DeviceConf.create_device(device) do
       {:ok, device} ->
         conn
         |> put_flash(:info, "Device created successfully.")
         |> redirect(to: device_path(conn, :show, device))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, group_id: device_params["group_id"])
+        render(conn, "new.html", changeset: changeset, group_id: device["group_id"])
     end
   end
 

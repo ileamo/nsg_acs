@@ -56,15 +56,9 @@ defmodule NsgAcs.DeviceConf do
 
   """
   def create_device(attrs \\ %{}) do
-    attrs = %{
-      key: attrs["key"],
-      params: %{a: 12, b: 24},
-      group_id: String.to_integer(attrs["group_id"])
-    }
-
     %Device{}
     |> Device.changeset(attrs)
-    |> Ecto.Changeset.put_change(:group_id, attrs.group_id)
+    |> Ecto.Changeset.put_change(:group_id, String.to_integer(attrs["group_id"]))
     |> Repo.insert()
   end
 
