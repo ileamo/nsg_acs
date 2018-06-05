@@ -10,7 +10,7 @@
 
   <title>NSG autoconfig server</title>
 
-  <link rel="stylesheet" href="<%= static_path(@conn, " /css/app.css ") %>">
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 </head>
 
 
@@ -30,31 +30,34 @@
 
           <!-- sidebar menu -->
           <%= render_shared "_sidebar.html", conn: @conn %>
-            <!-- /sidebar menu -->
+          <!-- /sidebar menu -->
 
         </div>
       </div>
 
       <!-- top navigation -->
       <%= render_shared "_top_navigation.html", conn: @conn %>
-        <!-- /top navigation -->
+      <!-- /top navigation -->
 
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <p class="alert-info" role="alert">
-            <%= get_flash(@conn,:info)%>
-          </p>
-          <p class="alert-error" role="alert">
-            <%= get_flash(@conn, :error) %>
-          </p>
-          <%= render @view_module, @view_template, assigns %>
-        </div>
-        <!-- /page content -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+
+        <% ai = get_flash(@conn,:info) %>
+        <%= if ai do %>
+        <div class="clearfix"></div>
+        <p class="alert alert-info">
+          <%= ai %>
+        </p>
+        <%= end %>
+
+        <%= render @view_module, @view_template, assigns %>
+      </div>
+      <!-- /page content -->
 
     </div>
   </div>
 
-  <script src="<%= static_path(@conn, " /js/app.js ") %>"></script>
+  <script src="<%= static_path(@conn, "/js/app.js ") %>"></script>
 </body>
 
 </html>

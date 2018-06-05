@@ -1,4 +1,4 @@
-<h2>Show Device</h2>
+<h2>Параметры устройства</h2>
 
 <ul>
 
@@ -11,6 +11,8 @@
     <strong>Группа:</strong>
     <%= @device.group.name %>
   </li>
+
+  <h2> Параметры: </h2>
 
   <li>
     <strong>Params:</strong>

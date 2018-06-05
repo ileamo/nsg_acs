@@ -22,7 +22,7 @@ defmodule NsgAcsWeb.DeviceController do
         |> redirect(to: device_path(conn, :show, device))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, group_id: device_params["group_id"])
     end
   end
 
@@ -47,7 +47,13 @@ defmodule NsgAcsWeb.DeviceController do
         |> redirect(to: device_path(conn, :show, device))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", device: device, changeset: changeset)
+        render(
+          conn,
+          "edit.html",
+          device: device,
+          changeset: changeset,
+          group_id: device_params["group_id"]
+        )
     end
   end
 
