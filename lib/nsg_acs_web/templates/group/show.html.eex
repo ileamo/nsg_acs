@@ -20,4 +20,14 @@
     </code></pre>
   </li>
 
+  <li>
+    <strong>Создана:</strong>
+    <%= @group.inserted_at %>
+  </li>
+
+  <li>
+    <strong>Обновлена:</strong>
+    <%= @group.updated_at %>
+  </li>
+
 </ul>

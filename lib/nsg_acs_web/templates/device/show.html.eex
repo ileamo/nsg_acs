@@ -29,3 +29,15 @@
   <pre><code>
     <%= get_conf(@device.group.template, @device.params) %>
   </code></pre>
+
+<ul>
+  <li>
+    <strong>Создана:</strong>
+    <%= @device.inserted_at %>
+  </li>
+
+  <li>
+    <strong>Обновлена:</strong>
+    <%= @device.updated_at %>
+  </li>
+</ul>
