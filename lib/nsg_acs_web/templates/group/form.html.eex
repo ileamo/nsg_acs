@@ -1,25 +1,27 @@
-<%= form_for @changeset, @action, fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+<div style="max-width:950px">
+  <%= form_for @changeset, @action, fn f -> %>
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+
+    <div class="form-group row">
+      <%= label f, :name, class: "col-sm-2 col-form-label" %>
+      <div class="col-sm-10">
+        <%= text_input f, :name, class: "form-control" %>
+        <%= error_tag f, :name %>
+    </div>
+    </div>
+
+    <div class="form-group">
+      <%= label f, :template, class: "control-label" %>
+      <%= textarea f, :template, class: "form-control", style: "font-family:monospace;height: 340px;" %>
+      <%= error_tag f, :template %>
+    </div>
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
     </div>
   <% end %>
-
-  <div class="form-group row">
-    <%= label f, :name, class: "col-sm-2 col-form-label" %>
-    <div class="col-sm-10">
-      <%= text_input f, :name, class: "form-control" %>
-      <%= error_tag f, :name %>
-  </div>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :template, class: "control-label" %>
-    <%= textarea f, :template, class: "form-control", style: "font-family:monospace;height: 340px;" %>
-    <%= error_tag f, :template %>
-  </div>
-
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</div>
