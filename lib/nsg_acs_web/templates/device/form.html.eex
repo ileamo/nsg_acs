@@ -22,7 +22,7 @@
     <div class="form-group">
       <%= label f, k, k, class: "control-label" %>
       <% value = @params && @params[k] %>
-      <% opts = [class: "form-control"] ++
+      <% opts = [class: "form-control", onfocus: "this.style.color='#000'"] ++
       (value && [value: value] || [value: Enum.at(v, 0) || "", style: "color: #CCC"]) %>
 
       <%= if length(v) <= 1 do %>
