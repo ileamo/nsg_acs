@@ -13,21 +13,39 @@ defmodule NsgAcsWeb.DeviceController do
   def new(conn, %{"group_id" => group_id}) do
     changeset = DeviceConf.change_device(%Device{})
     group = GroupConf.get_group!(group_id)
-    params = GroupConf.get_params_from_template(group.template)
-    render(conn, "new.html", changeset: changeset, group_id: group_id, params: params)
+    templ_params = GroupConf.get_params_from_template(group.template)
+
+    render(
+      conn,
+      "new.html",
+      changeset: changeset,
+      group_id: group_id,
+      templ_params: templ_params,
+      params: nil
+    )
   end
 
-  def create(conn, %{"device" => device, "params" => params}) do
-    device = Map.put(device, "params", params)
+  def create(conn, %{"device" => device_params, "params" => params}) do
+    device_params = Map.put(device_params, "params", params)
 
-    case DeviceConf.create_device(device) do
+    case DeviceConf.create_device(device_params) do
       {:ok, device} ->
         conn
         |> put_flash(:info, "Device created successfully.")
         |> redirect(to: device_path(conn, :show, device))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, group_id: device["group_id"])
+        group_id = device_params["group_id"]
+        group = GroupConf.get_group!(group_id)
+        templ_params = GroupConf.get_params_from_template(group.template)
+
+        render(
+          conn,
+          "new.html",
+          changeset: changeset,
+          group_id: group_id,
+          templ_params: templ_params
+        )
     end
   end
 
@@ -38,6 +56,7 @@ defmodule NsgAcsWeb.DeviceController do
 
   def edit(conn, %{"id" => id}) do
     device = DeviceConf.get_device!(id)
+    templ_params = GroupConf.get_params_from_template(device.group.template)
     changeset = DeviceConf.change_device(device)
 
     render(
@@ -46,11 +65,13 @@ defmodule NsgAcsWeb.DeviceController do
       device: device,
       changeset: changeset,
       group_id: device.group.id,
+      templ_params: templ_params,
       params: device.params
     )
   end
 
-  def update(conn, %{"id" => id, "device" => device_params}) do
+  def update(conn, %{"id" => id, "device" => device_params, "params" => params}) do
+    device_params = Map.put(device_params, "params", params)
     device = DeviceConf.get_device!(id)
 
     case DeviceConf.update_device(device, device_params) do

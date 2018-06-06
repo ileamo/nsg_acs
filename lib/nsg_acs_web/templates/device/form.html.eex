@@ -21,7 +21,8 @@
 
     <div class="form-group">
       <%= label f, k, k, class: "control-label" %>
-      <%= text_input :params, k, class: "form-control", value: Enum.at(v, 0) || "" %>
+      <%= text_input :params, k, class: "form-control",
+        value: @params && @params[k] || Enum.at(v, 0) || "" %>
     </div>
 
   <% end %>
