@@ -1,5 +1,4 @@
+<%= link "Список устройств", to: device_path(@conn, :index), class: "btn btn-default btn-xs" %>
 <h2>Новое устройство</h2>
 
 <%= render "form.html", Map.put(assigns, :action, device_path(@conn, :create)) %>
-
-<span><%= link "Back", to: device_path(@conn, :index) %></span>

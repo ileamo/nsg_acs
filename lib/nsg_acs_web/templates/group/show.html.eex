@@ -1,5 +1,9 @@
-<span><%= link "Edit", to: group_path(@conn, :edit, @group) %></span>
-<span><%= link "Back", to: group_path(@conn, :index) %></span>
+<%= link "Редактировать", to: group_path(@conn, :edit, @group), class: "btn btn-default btn-xs" %>
+<%= link "Список групп", to: group_path(@conn, :index), class: "btn btn-default btn-xs" %>
+<%= link "Добавить устройство",
+  to: device_path(@conn, :new, group_id: @group.id, group_name: @group.name),
+  class: "btn btn-default btn-xs"
+%>
 
 <h2>Группа</h2>
 <ul>

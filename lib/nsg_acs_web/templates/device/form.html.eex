@@ -17,10 +17,10 @@
 
   <h2> Параметры: </h2>
 
-  <%= for  {k, v}  <-  @params  do %>
+  <%= for  {k, v}  <-  @templ_params  do %>
 
     <div class="form-group">
-      <%= label f, k, class: "control-label" %>
+      <%= label f, k, k, class: "control-label" %>
       <%= text_input :params, k, class: "form-control", value: Enum.at(v, 0) || "" %>
     </div>
 

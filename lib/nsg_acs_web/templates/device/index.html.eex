@@ -48,9 +48,9 @@
                   </td>
 
                   <td class="text-right">
-                    <span><%= link "Show", to: device_path(@conn, :show, device), class: "btn btn-default btn-xs" %></span>
-                    <span><%= link "Edit", to: device_path(@conn, :edit, device), class: "btn btn-default btn-xs" %></span>
-                    <span><%= link "Delete", to: device_path(@conn, :delete, device), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+                    <span><%= link "Показать", to: device_path(@conn, :show, device), class: "btn btn-default btn-xs" %></span>
+                    <span><%= link "Редактировать", to: device_path(@conn, :edit, device), class: "btn btn-default btn-xs" %></span>
+                    <span><%= link "Удалить", to: device_path(@conn, :delete, device), method: :delete, data: [confirm: "Вы уверены?"], class: "btn btn-danger btn-xs" %></span>
                   </td>
                 </tr>
                 <% end %>

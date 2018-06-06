@@ -1,5 +1,8 @@
-<h2>Параметры устройства</h2>
+<%= link "Редактировать", to: device_path(@conn, :edit, @device), class: "btn btn-default btn-xs" %>
+<%= link "Список устройств", to: device_path(@conn, :index), class: "btn btn-default btn-xs" %>
+<%= link "Список групп", to: group_path(@conn, :index), class: "btn btn-default btn-xs" %>
 
+<h2>Параметры устройства</h2>
 <ul>
 
   <li>
@@ -20,8 +23,9 @@
     <%= v %>
   </li>
   <% end %>
-
 </ul>
 
-<span><%= link "Edit", to: device_path(@conn, :edit, @device) %></span>
-<span><%= link "Back", to: device_path(@conn, :index) %></span>
+<h2>Конфигурация</h2>
+  <pre><code>
+    <%= @device.group.template %>
+  </code></pre>
