@@ -22,9 +22,14 @@
     <div class="form-group">
       <%= label f, k, k, class: "control-label" %>
       <% value = @params && @params[k] %>
-      <% opts = [class: "form-control"] ++ 
+      <% opts = [class: "form-control"] ++
       (value && [value: value] || [value: Enum.at(v, 0) || "", style: "color: #CCC"]) %>
+
+      <%= if length(v) <= 1 do %>
       <%= text_input :params, k, opts %>
+      <%= else %>
+      <%= select :params, k, v, opts %>
+      <% end %>
     </div>
 
   <% end %>
