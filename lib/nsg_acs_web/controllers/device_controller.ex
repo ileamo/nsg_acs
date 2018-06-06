@@ -44,7 +44,8 @@ defmodule NsgAcsWeb.DeviceController do
           "new.html",
           changeset: changeset,
           group_id: group_id,
-          templ_params: templ_params
+          templ_params: templ_params,
+          params: nil
         )
     end
   end
@@ -81,12 +82,18 @@ defmodule NsgAcsWeb.DeviceController do
         |> redirect(to: device_path(conn, :show, device))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        group_id = device_params["group_id"]
+        group = GroupConf.get_group!(group_id)
+        templ_params = GroupConf.get_params_from_template(group.template)
+
         render(
           conn,
           "edit.html",
           device: device,
           changeset: changeset,
-          group_id: device_params["group_id"]
+          group_id: group_id,
+          templ_params: templ_params,
+          params: nil
         )
     end
   end

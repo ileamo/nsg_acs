@@ -9,7 +9,7 @@
 
   <div class="form-group">
     <%= label f, :key, class: "control-label" %>
-    <%= text_input f, :key, class: "form-control" %>
+    <%= text_input f, :key, class: "form-control", placeholder: "Серийный номер в формате NSGXXXX_NNNNNNNNNN" %>
     <%= error_tag f, :key %>
   </div>
 
