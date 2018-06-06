@@ -27,5 +27,5 @@
 
 <h2>Конфигурация</h2>
   <pre><code>
-    <%= @device.group.template %>
+    <%= get_conf(@device.group.template, @device.params) %>
   </code></pre>

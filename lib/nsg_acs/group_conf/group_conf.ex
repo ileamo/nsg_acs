@@ -102,8 +102,10 @@ defmodule NsgAcs.GroupConf do
     Group.changeset(group, %{})
   end
 
+  @templ_regex ~r/\$\((\w[\w\d_]*)=?([^\)]*)\)/
+
   def get_params_from_template(tp) do
-    ~r/\$\((\w[\w\d_]*)=?([^\)]*)\)/
+    @templ_regex
     |> Regex.scan(tp)
     |> Enum.group_by(fn [_, x, _] -> x end, fn [_, _, x] -> x end)
     |> Enum.map(fn {k, v} -> {k, extract_defaults(v)} end)
@@ -119,5 +121,14 @@ defmodule NsgAcs.GroupConf do
     (str == "" && -1) ||
       Regex.scan(~r/\|/, str)
       |> Enum.count()
+  end
+
+  def get_conf_from_template(tp, params) do
+    templ_params = get_params_from_template(tp)
+
+    @templ_regex
+    |> Regex.replace(tp, fn _, match ->
+      params[match] || templ_params[match] |> Enum.at(0) || ""
+    end)
   end
 end
