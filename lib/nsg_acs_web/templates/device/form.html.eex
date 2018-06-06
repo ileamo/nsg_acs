@@ -7,10 +7,12 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= label f, :key, class: "control-label" %>
-    <%= text_input f, :key, class: "form-control", placeholder: "Серийный номер в формате NSGXXXX_NNNNNNNNNN" %>
-    <%= error_tag f, :key %>
+  <div class="form-group row">
+    <%= label f, :key, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= text_input f, :key, class: "form-control", placeholder: "Серийный номер в формате NSGXXXX_NNNNNNNNNN" %>
+      <%= error_tag f, :key %>
+  </div>
   </div>
 
   <div class="clearfix"></div>
@@ -19,17 +21,19 @@
 
   <%= for  {k, v}  <-  @templ_params  do %>
 
-    <div class="form-group">
-      <%= label f, k, k, class: "control-label" %>
+    <div class="form-group row">
+      <%= label f, k, k, class: "col-sm-2 col-form-label" %>
       <% value = @params && @params[k] %>
       <% opts = [class: "form-control", onfocus: "this.style.color='#000'"] ++
-      (value && [value: value] || [value: Enum.at(v, 0) || "", style: "color: #CCC"]) %>
+      (value && [value: value] || [value: Enum.at(v, 0) || "", style: "color: #AAA"]) %>
 
-      <%= if length(v) <= 1 do %>
-      <%= text_input :params, k, opts %>
-      <%= else %>
-      <%= select :params, k, v, opts %>
-      <% end %>
+      <div class="col-sm-10">
+        <%= if length(v) <= 1 do %>
+        <%= text_input :params, k, opts %>
+        <%= else %>
+        <%= select :params, k, v, opts %>
+        <% end %>
+      </div>
     </div>
 
   <% end %>
