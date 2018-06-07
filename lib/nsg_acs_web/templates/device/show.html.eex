@@ -17,7 +17,7 @@
 
   <h2> Параметры: </h2>
 
-  <%= for {k, v} <- @device.params do %>
+  <%= for {k, v} <- device_and_key_params(@device) do %>
   <li>
     <strong><%= k %>:</strong>
     <%= v %>
@@ -27,7 +27,7 @@
 
 <h2>Конфигурация</h2>
   <pre><code>
-    <%= get_conf(@device.group.template, @device.params) %>
+    <%= get_conf(@device) %>
   </code></pre>
 
 <ul>

@@ -103,13 +103,22 @@ defmodule NsgAcs.GroupConf do
   end
 
   @templ_regex ~r/\$\((\w[\w\d_]*)=?([^\)]*)\)/
+  def key_params_list do
+    ["GROUP", "ID", "SN", "SN_LB", "SN_HB"]
+  end
 
-  def get_params_from_template(tp) do
+  def get_all_params_from_template(tp) do
     @templ_regex
     |> Regex.scan(tp)
     |> Enum.group_by(fn [_, x, _] -> x end, fn [_, _, x] -> x end)
     |> Enum.map(fn {k, v} -> {k, extract_defaults(v)} end)
     |> Enum.into(%{})
+  end
+
+  def get_params_from_template(tp) do
+    tp
+    |> get_all_params_from_template
+    |> Map.drop(key_params_list())
   end
 
   defp extract_defaults(v) do
@@ -123,12 +132,38 @@ defmodule NsgAcs.GroupConf do
       |> Enum.count()
   end
 
-  def get_conf_from_template(tp, params) do
+  def get_conf_from_template(device) do
+    params = device.params
+    tp = device.group.template
     templ_params = get_params_from_template(tp)
+    key_params = get_params_from_key(device)
+    params = Map.merge(params, key_params)
 
     @templ_regex
     |> Regex.replace(tp, fn _, match ->
-      params[match] || templ_params[match] |> Enum.at(0) || ""
+      params[match] || (templ_params[match] && templ_params[match] |> Enum.at(0)) || ""
     end)
+  end
+
+  @key_regex ~r/(.*)_\d*(\d\d\d\d\d\d)$/
+
+  def get_params_from_key(device) do
+    case Regex.run(@key_regex, device.key) do
+      [id, _model, zsn] ->
+        sn = String.to_integer(zsn)
+
+        %{
+          "GROUP" => device.group.name,
+          "ID" => id,
+          "SN" => zsn,
+          "SN_LB" => Integer.to_string(rem(sn, 256)),
+          "SN_HB" => Integer.to_string(div(sn, 256))
+        }
+
+      _ ->
+        %{
+          "GROUP" => device.group.name
+        }
+    end
   end
 end

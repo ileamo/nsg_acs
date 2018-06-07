@@ -9,12 +9,17 @@
 <ul>
 
   <li>
-    <strong>Name:</strong>
+    <strong>Имя:</strong>
     <%= @group.name %>
   </li>
 
   <li>
-    <strong>Template:</strong>
+    <strong>Параметры:</strong>
+    <%= @group.template |> get_params %>
+  </li>
+
+  <li>
+    <strong>Шаблон:</strong>
     <pre><code>
       <%= @group.template %>
     </code></pre>

@@ -8,7 +8,11 @@ defmodule NsgAcsWeb.DeviceView do
     |> Enum.join(", ")
   end
 
-  def get_conf(tp, params) do
-    GroupConf.get_conf_from_template(tp, params)
+  def get_conf(device) do
+    GroupConf.get_conf_from_template(device)
+  end
+
+  def device_and_key_params(device) do
+    Map.merge(device.params, GroupConf.get_params_from_key(device))
   end
 end

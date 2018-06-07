@@ -11,7 +11,7 @@ defmodule NsgAcsWeb.GroupView do
 
   def get_params(templ) do
     templ
-    |> GroupConf.get_params_from_template()
+    |> GroupConf.get_all_params_from_template()
     |> Map.keys()
     |> Enum.join(", ")
   end
