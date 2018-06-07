@@ -50,6 +50,10 @@ defmodule NsgAcsWeb.DeviceController do
     end
   end
 
+  def create(conn, %{"device" => device_params}) do
+    create(conn, %{"device" => device_params, "params" => %{}})
+  end
+
   def show(conn, %{"id" => id}) do
     device = DeviceConf.get_device!(id)
     render(conn, "show.html", device: device)
