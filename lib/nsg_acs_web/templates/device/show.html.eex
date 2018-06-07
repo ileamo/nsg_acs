@@ -2,7 +2,7 @@
 <%= link "Список устройств", to: device_path(@conn, :index), class: "btn btn-default btn-xs" %>
 <%= link "Список групп", to: group_path(@conn, :index), class: "btn btn-default btn-xs" %>
 
-<h2>Параметры устройства</h2>
+<h2>Устройство</h2>
 <ul>
 
   <li>
@@ -17,12 +17,22 @@
 
   <h2> Параметры: </h2>
 
+  <%= for {k, v} <- @device.params do %>
+  <li>
+    <strong><%= k %>:</strong>
+    <%= v %>
+  </li>
+  <% end %>
+
+  <h2> Вычисляемые параметры: </h2>
+
   <%= for {k, v} <- device_and_key_params(@device) do %>
   <li>
     <strong><%= k %>:</strong>
     <%= v %>
   </li>
   <% end %>
+
 </ul>
 
 <h2>Конфигурация</h2>

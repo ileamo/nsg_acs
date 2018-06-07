@@ -13,6 +13,6 @@ defmodule NsgAcsWeb.DeviceView do
   end
 
   def device_and_key_params(device) do
-    Map.merge(device.params, GroupConf.get_params_from_key(device))
+    GroupConf.get_params_from_key(device)
   end
 end
