@@ -24,6 +24,11 @@ defmodule NsgAcsWeb.Router do
     resources("/devices", DeviceController)
   end
 
+  scope "/api", NsgAcsWeb.Api, as: :api do
+    pipe_through(:api)
+    post("/", DeviceController, :index)
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", NsgAcsWeb do
   #   pipe_through :api
