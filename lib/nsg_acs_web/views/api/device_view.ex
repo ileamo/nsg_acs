@@ -2,15 +2,11 @@ defmodule NsgAcsWeb.Api.DeviceView do
   use NsgAcsWeb, :view
   alias NsgAcsWeb.Api.DeviceView
 
-  def render("index.json", %{devices: devices}) do
-    %{data: render_many(devices, DeviceView, "device.json")}
+  def render("result.json", %{id: id, result: result}) do
+    %{"id" => id, "result" => result}
   end
 
-  def render("show.json", %{device: device}) do
-    %{data: render_one(device, DeviceView, "device.json")}
-  end
-
-  def render("device.json", %{device: device}) do
-    %{id: device.id}
+  def render("error.json", %{id: id, error: err}) do
+    %{"id" => id, "error" => err}
   end
 end
