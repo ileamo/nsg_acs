@@ -2,7 +2,7 @@ defmodule NsgAcsWeb.Api.DeviceController do
   use NsgAcsWeb, :controller
 
   alias NsgAcs.DeviceConf
-  alias NsgAcs.DeviceConf.Device
+  alias NsgAcs.GroupConf
 
   action_fallback(NsgAcsWeb.FallbackController)
 
@@ -22,11 +22,20 @@ defmodule NsgAcsWeb.Api.DeviceController do
     end
   end
 
-  def get_res("get.conf", params) do
-    {:ok, params}
+  defp get_res("get.conf", %{"nsg_device" => dev, "serial_num" => sn}) do
+    key = "#{dev}_#{sn}"
+
+    case DeviceConf.get_device_by_key(key) do
+      %{} = device -> {:ok, %{configuration: GroupConf.get_conf_from_template(device)}}
+      _ -> {:error, "no configuration for key #{key}"}
+    end
   end
 
-  def get_res(_, _) do
+  defp get_res("get.conf", _) do
+    {:error, "no nsg_device or serial_num"}
+  end
+
+  defp get_res(_, _) do
     {:error, "unknown method"}
   end
 end

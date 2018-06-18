@@ -43,6 +43,12 @@ defmodule NsgAcs.DeviceConf do
     |> Repo.preload(:group)
   end
 
+  def get_device_by_key(key) do
+    Device
+    |> Repo.get_by(key: key)
+    |> Repo.preload(:group)
+  end
+
   @doc """
   Creates a device.
 
