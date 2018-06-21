@@ -22,6 +22,14 @@ defmodule NsgAcsWeb.Api.DeviceController do
     end
   end
 
+  def index(conn, %{"id" => id}) do
+    render(conn, "error.json", %{id: id, error: "no method and/or params field"})
+  end
+
+  def index(conn, _) do
+    render(conn, "error.json", %{id: 0, error: "no request id"})
+  end
+
   defp get_res("get.conf", %{"nsg_device" => dev, "serial_num" => sn}) do
     key = "#{dev}_#{sn}"
 
