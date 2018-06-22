@@ -6,6 +6,70 @@ defmodule NsgAcsWeb.Api.DeviceController do
 
   action_fallback(NsgAcsWeb.FallbackController)
 
+  plug :validate_params
+  plug :get_res
+
+  defp validate_params(
+         conn = %{
+           params: %{
+             "id" => _id,
+             "method" => _method,
+             "params" => %{}
+           }
+         },
+         _
+       ) do
+    conn
+  end
+
+  defp validate_params(conn = %{params: %{"id" => id}}, _) do
+    conn
+    |> render_and_log_error(id, "No method or params field")
+    |> halt()
+  end
+
+  defp validate_params(conn, _) do
+    conn
+    |> render_and_log_error(0, "No request id")
+    |> halt()
+  end
+
+  defp get_res(
+         conn = %{
+           params: %{
+             "id" => id,
+             "method" => "get.conf",
+             "params" => %{"nsg_device" => dev, "serial_num" => sn}
+           }
+         },
+         _
+       ) do
+    key = "#{dev}_#{sn}"
+
+    case DeviceConf.get_device_by_key(key) do
+      %{} = device ->
+        conn
+        |> assign(:configuration, GroupConf.get_conf_from_template(device))
+
+      _ ->
+        conn
+        |> render_and_log_error(id, "no configuration for key #{key}")
+        |> halt()
+    end
+  end
+
+  defp get_res(conn = %{params: %{"id" => id, "method" => "get.conf"}}, _) do
+    conn
+    |> render_and_log_error(id, "No nsg_device or serial_num")
+    |> halt()
+  end
+
+  defp get_res(conn = %{params: %{"id" => id}}, _) do
+    conn
+    |> render_and_log_error(id, "Unknown method")
+    |> halt()
+  end
+
   @doc """
   For testing use curl:
 
@@ -15,35 +79,15 @@ defmodule NsgAcsWeb.Api.DeviceController do
 
   """
 
-  def index(conn, %{"id" => id, "method" => method, "params" => params}) do
-    case get_res(method, params) do
-      {:ok, res} -> render(conn, "result.json", %{id: id, result: res})
-      {:error, err} -> render(conn, "error.json", %{id: id, error: err})
-    end
+  def index(conn = %{assigns: %{configuration: conf}, params: %{"id" => id}}, _) do
+    render(conn, "result.json", %{id: id, result: %{configuration: conf}})
   end
 
-  def index(conn, %{"id" => id}) do
-    render(conn, "error.json", %{id: id, error: "no method and/or params field"})
+  def index(conn = %{params: %{"id" => id}}, _) do
+    render_and_log_error(conn, id, "No configuration")
   end
 
-  def index(conn, _) do
-    render(conn, "error.json", %{id: 0, error: "no request id"})
-  end
-
-  defp get_res("get.conf", %{"nsg_device" => dev, "serial_num" => sn}) do
-    key = "#{dev}_#{sn}"
-
-    case DeviceConf.get_device_by_key(key) do
-      %{} = device -> {:ok, %{configuration: GroupConf.get_conf_from_template(device)}}
-      _ -> {:error, "no configuration for key #{key}"}
-    end
-  end
-
-  defp get_res("get.conf", _) do
-    {:error, "no nsg_device or serial_num"}
-  end
-
-  defp get_res(_, _) do
-    {:error, "unknown method"}
+  defp render_and_log_error(conn, id, mes) do
+    render(conn, "error.json", %{id: id, error: mes})
   end
 end
