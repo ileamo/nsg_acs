@@ -39,7 +39,7 @@
             <tbody>
               <%= for request <- @requests do %>
               <tr>
-                <td><%= request.inserted_at %></td>
+                <td><%=  NaiveDateTime.truncate(request.inserted_at, :second) %></td>
                 <td><%= request.from %></td>
                 <td><%= "#{request.request["nsg_device"]}_#{request.request["serial_num"]}" %></td>
                 <td><%= request.response %></td>
