@@ -9,7 +9,7 @@
 
   <li>
     <strong>Request:</strong>
-    <%= @request.request %>
+    <%= inspect(@request.request, pretty: true) %>
   </li>
 
   <li>
@@ -19,5 +19,4 @@
 
 </ul>
 
-<span><%= link "Edit", to: request_path(@conn, :edit, @request) %></span>
 <span><%= link "Back", to: request_path(@conn, :index) %></span>

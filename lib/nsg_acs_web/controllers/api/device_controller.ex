@@ -3,6 +3,7 @@ defmodule NsgAcsWeb.Api.DeviceController do
 
   alias NsgAcs.DeviceConf
   alias NsgAcs.GroupConf
+  alias NsgAcs.RequestLog
 
   action_fallback(NsgAcsWeb.FallbackController)
 
@@ -88,6 +89,18 @@ defmodule NsgAcsWeb.Api.DeviceController do
   end
 
   defp render_and_log_error(conn, id, mes) do
+    request_log(conn, "ERR: #{mes}")
     render(conn, "error.json", %{id: id, error: mes})
+  end
+
+  defp request_log(%{remote_ip: ip, params: %{"params" => params}}, mes) do
+    RequestLog.create_request(%{
+      from: ip |> :inet.ntoa() |> to_string(),
+      request: params,
+      response: mes
+    })
+  end
+
+  defp request_log(_, _) do
   end
 end
