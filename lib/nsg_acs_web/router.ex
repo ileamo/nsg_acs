@@ -22,6 +22,7 @@ defmodule NsgAcsWeb.Router do
 
     resources("/groups", GroupController)
     resources("/devices", DeviceController)
+    resources("/requests", RequestController)
   end
 
   scope "/api", NsgAcsWeb.Api, as: :api do

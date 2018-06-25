@@ -1,0 +1,23 @@
+<h2>Show Request</h2>
+
+<ul>
+
+  <li>
+    <strong>From:</strong>
+    <%= @request.from %>
+  </li>
+
+  <li>
+    <strong>Request:</strong>
+    <%= @request.request %>
+  </li>
+
+  <li>
+    <strong>Response:</strong>
+    <%= @request.response %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: request_path(@conn, :edit, @request) %></span>
+<span><%= link "Back", to: request_path(@conn, :index) %></span>
