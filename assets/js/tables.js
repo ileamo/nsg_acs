@@ -1,8 +1,13 @@
 import $ from "jquery"
 
-require('datatables.net-bs')( window, $ );
+require('datatables.net-bs')(window, $);
 
 $("#datatable").DataTable();
+$("#datatableJ").DataTable({
+  "order": [
+    [0, "desc"]
+  ]
+});
 
 $('#wizard').smartWizard();
 
