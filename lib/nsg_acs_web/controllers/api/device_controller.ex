@@ -81,6 +81,7 @@ defmodule NsgAcsWeb.Api.DeviceController do
   """
 
   def index(conn = %{assigns: %{configuration: conf}, params: %{"id" => id}}, _) do
+    request_log(conn, "OK")
     render(conn, "result.json", %{id: id, result: %{configuration: conf}})
   end
 

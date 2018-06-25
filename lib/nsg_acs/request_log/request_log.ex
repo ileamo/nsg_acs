@@ -18,7 +18,7 @@ defmodule NsgAcs.RequestLog do
 
   """
   def list_requests do
-    Repo.all(Request)
+    Repo.all(from(Request, order_by: [desc: :inserted_at], limit: 100))
   end
 
   @doc """
