@@ -1,22 +1,30 @@
-<h2>Show Request</h2>
+<%= link "Журнал запросов", to: request_path(@conn, :index), class: "btn btn-default btn-xs" %>
 
+<h2>Запрос конфигурации</h2>
 <ul>
 
   <li>
-    <strong>From:</strong>
+    <strong>Дата:</strong>
+    <%= @request.inserted_at %>
+  </li>
+
+  <li>
+    <strong>IP клиента:</strong>
     <%= @request.from %>
   </li>
 
   <li>
-    <strong>Request:</strong>
-    <%= inspect(@request.request, pretty: true) %>
-  </li>
-
-  <li>
-    <strong>Response:</strong>
+    <strong>Результат:</strong>
     <%= @request.response %>
   </li>
 
-</ul>
+  <h2> Параметры запроса: </h2>
 
-<span><%= link "Back", to: request_path(@conn, :index) %></span>
+  <%= for {k, v} <- @request.request do %>
+  <li>
+    <strong><%= k %>:</strong>
+    <%= v %>
+  </li>
+  <% end %>
+
+</ul>
