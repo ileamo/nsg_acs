@@ -19,7 +19,7 @@ defmodule NsgAcsWeb.Router do
 
     get("/", PageController, :index)
     get("/login", PageController, :login)
-
+    resources("/users", UserController)
     resources("/groups", GroupController)
     resources("/devices", DeviceController)
     resources("/requests", RequestController, only: [:index, :show, :delete])
