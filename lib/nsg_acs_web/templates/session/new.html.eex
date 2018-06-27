@@ -20,17 +20,17 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+
+            <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
               <h1>NSG</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" required="" />
+                    <%= text_input f, :username, placeholder: "Username",  class: "form-control" %>
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Password" required="" />
+                <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
               </div>
-              <div>
-                <%= link "Log in", to: page_path(@conn, :index), class: "btn btn-default submit" %>
-                <a class="reset_pass" href="#">Lost your password?</a>
+              <div class="form-group">
+                <%= submit "Submit", class: "btn btn-primary" %>
               </div>
 
               <div class="clearfix"></div>
@@ -47,7 +47,8 @@
                   <p>©2018 NSG</p>
                 </div>
               </div>
-            </form>
+            <% end %>
+
           </section>
         </div>
       </div>

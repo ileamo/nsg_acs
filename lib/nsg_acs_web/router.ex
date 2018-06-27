@@ -18,8 +18,8 @@ defmodule NsgAcsWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
-    get("/login", PageController, :login)
     resources("/users", UserController)
+    resources("/session", SessionController, only: [:new, :create, :delete])
     resources("/groups", GroupController)
     resources("/devices", DeviceController)
     resources("/requests", RequestController, only: [:index, :show, :delete])
