@@ -21,8 +21,17 @@
         <div class="animate form login_form">
           <section class="login_content">
 
+            <% ai = get_flash(@conn,:error) %>
+            <%= if ai do %>
+            <div class="clearfix"></div>
+            <p class="alert alert-error">
+              <%= ai %>
+            </p>
+            <%= end %>
+
+
             <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
-              <h1>NSG</h1>
+              <h1>Сервер автоконфигурации</h1>
               <div>
                     <%= text_input f, :username, placeholder: "Username",  class: "form-control" %>
               </div>
@@ -41,9 +50,6 @@
                 <br />
 
                 <div>
-                  <h1>
-                    Сервер автоконфигурации
-                  </h1>
                   <p>©2018 NSG</p>
                 </div>
               </div>
