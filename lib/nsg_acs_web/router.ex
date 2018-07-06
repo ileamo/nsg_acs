@@ -13,13 +13,23 @@ defmodule NsgAcsWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :auth do
+    plug(NsgAcs.Auth.AuthAccessPipeline)
+  end
+
+  scope "/", NsgAcsWeb do
+    pipe_through([:browser])
+
+    resources("/session", SessionController, only: [:new, :create])
+  end
+
   scope "/", NsgAcsWeb do
     # Use the default browser stack
-    pipe_through(:browser)
+    pipe_through([:browser, :auth])
 
     get("/", PageController, :index)
     resources("/users", UserController)
-    resources("/session", SessionController, only: [:new, :create, :delete])
+    resources("/session", SessionController, only: [:delete])
     resources("/groups", GroupController)
     resources("/devices", DeviceController)
     resources("/requests", RequestController, only: [:index, :show, :delete])
