@@ -5,9 +5,19 @@
       <div class="nav toggle">
         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
       </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="">
+          <%= link to: session_path(@conn, :delete, 0), method: :delete, data: [confirm: "Вы уверены?"] do %>
+            <i class="fa fa-sign-out"></i> Выйти
+
+
+
+
+
+          <% end %>
+        </li>
+      </ul>
     </nav>
-
-
   </div>
 </div>
 <!-- /top navigation -->

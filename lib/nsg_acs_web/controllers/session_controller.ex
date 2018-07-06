@@ -56,7 +56,13 @@ defmodule NsgAcsWeb.SessionController do
   end
 
   def delete(conn, _) do
-    # here will be an implementation
     conn
+    |> logout()
+    |> redirect(to: session_path(conn, :new))
+  end
+
+  defp logout(conn) do
+    conn
+    |> Guardian.Plug.sign_out()
   end
 end
