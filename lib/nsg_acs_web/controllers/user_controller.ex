@@ -4,6 +4,8 @@ defmodule NsgAcsWeb.UserController do
   alias NsgAcs.Auth
   alias NsgAcs.Auth.User
 
+  plug :admin
+
   def index(conn, _params) do
     users = Auth.list_users()
     render(conn, "index.html", users: users)
@@ -20,6 +22,7 @@ defmodule NsgAcsWeb.UserController do
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +47,7 @@ defmodule NsgAcsWeb.UserController do
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end
@@ -56,5 +60,17 @@ defmodule NsgAcsWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
+  end
+
+  defp admin(conn = %{private: %{guardian_default_resource: %{is_admin: true}}}, _opts) do
+    IO.puts("**********")
+    IO.puts(inspect(conn, pretty: true))
+    IO.puts(inspect(conn.private.guardian_default_resource.is_admin))
+    conn
+  end
+
+  defp admin(conn, _opt) do
+    conn
+    |> halt()
   end
 end

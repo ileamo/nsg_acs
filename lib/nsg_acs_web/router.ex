@@ -14,7 +14,7 @@ defmodule NsgAcsWeb.Router do
   end
 
   pipeline :auth do
-    plug(NsgAcs.Auth.AuthAccessPipeline)
+    plug(NsgAcs.Guard.AuthAccessPipeline)
   end
 
   scope "/", NsgAcsWeb do

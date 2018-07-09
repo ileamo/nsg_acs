@@ -3,7 +3,7 @@ defmodule NsgAcsWeb.SessionController do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias NsgAcs.Auth.User
   alias NsgAcs.Repo
-  alias NsgAcs.Auth.Guardian
+  alias NsgAcs.Guard.Guardian
 
   plug :scrub_params, "session" when action in ~w(create)a
 

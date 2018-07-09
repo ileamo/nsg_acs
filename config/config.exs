@@ -21,13 +21,13 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
-config :nsg_acs, NsgAcs.Auth.Guardian,
+config :nsg_acs, NsgAcs.Guard.Guardian,
   issuer: "nsgacs",
   secret_key: "HNinpKh9Ne3tr8BpjCpAEh0xzCqTIG3PWsfkR2AtzvUaRIpbs6oIQ9RcmjmGPekJ"
 
-config :nsg_acs, NsgAcs.Auth.AuthAccessPipeline,
-  module: NsgAcs.Auth.Guardian,
-  error_handler: NsgAcs.Auth.AuthErrorHandler
+config :nsg_acs, NsgAcs.Guard.AuthAccessPipeline,
+  module: NsgAcs.Guard.Guardian,
+  error_handler: NsgAcs.Guard.AuthErrorHandler
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

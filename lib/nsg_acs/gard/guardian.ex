@@ -1,4 +1,4 @@
-defmodule NsgAcs.Auth.Guardian do
+defmodule NsgAcs.Guard.Guardian do
   @moduledoc false
 
   use Guardian, otp_app: :nsg_acs

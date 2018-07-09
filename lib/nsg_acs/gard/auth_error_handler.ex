@@ -1,4 +1,4 @@
-defmodule NsgAcs.Auth.AuthErrorHandler do
+defmodule NsgAcs.Guard.AuthErrorHandler do
   @moduledoc false
 
   import NsgAcsWeb.Router.Helpers

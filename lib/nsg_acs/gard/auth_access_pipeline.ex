@@ -1,4 +1,4 @@
-defmodule NsgAcs.Auth.AuthAccessPipeline do
+defmodule NsgAcs.Guard.AuthAccessPipeline do
   @moduledoc false
 
   use Guardian.Plug.Pipeline, otp_app: :nsg_acs
