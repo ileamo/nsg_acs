@@ -3,8 +3,10 @@ defmodule NsgAcsWeb.UserController do
 
   alias NsgAcs.Auth
   alias NsgAcs.Auth.User
+  import NsgAcs.Guard, only: [load_current_user: 2, is_admin: 2]
 
-  plug :admin
+  plug :load_current_user
+  plug :is_admin
 
   def index(conn, _params) do
     users = Auth.list_users()
@@ -60,17 +62,5 @@ defmodule NsgAcsWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
-  end
-
-  defp admin(conn = %{private: %{guardian_default_resource: %{is_admin: true}}}, _opts) do
-    IO.puts("**********")
-    IO.puts(inspect(conn, pretty: true))
-    IO.puts(inspect(conn.private.guardian_default_resource.is_admin))
-    conn
-  end
-
-  defp admin(conn, _opt) do
-    conn
-    |> halt()
   end
 end

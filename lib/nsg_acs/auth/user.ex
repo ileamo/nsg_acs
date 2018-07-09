@@ -16,7 +16,7 @@ defmodule NsgAcs.Auth.User do
     |> cast(attrs, [:username, :password, :is_admin])
     |> validate_required([:username, :password, :is_admin])
     |> validate_length(:username, min: 3, max: 32)
-    |> validate_length(:password, min: 6, max: 32)
+    |> validate_length(:password, min: 5, max: 32)
     |> unique_constraint(:username)
     |> put_password_hash()
   end

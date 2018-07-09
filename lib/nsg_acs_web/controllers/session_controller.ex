@@ -3,7 +3,7 @@ defmodule NsgAcsWeb.SessionController do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   alias NsgAcs.Auth.User
   alias NsgAcs.Repo
-  alias NsgAcs.Guard.Guardian
+  alias NsgAcs.Guard
 
   plug :scrub_params, "session" when action in ~w(create)a
 
@@ -22,7 +22,7 @@ defmodule NsgAcsWeb.SessionController do
         # if user was found and provided password hash equals to stored
         # hash
         user && checkpw(password, user.password_hash) ->
-          {:ok, login(conn, user)}
+          {:ok, Guard.login(conn, user)}
 
         # else if we just found the use
         user ->
@@ -49,20 +49,9 @@ defmodule NsgAcsWeb.SessionController do
     end
   end
 
-  defp login(conn, user) do
-    conn
-    |> Guardian.Plug.sign_in(user)
-    |> assign(:current_user, user)
-  end
-
   def delete(conn, _) do
     conn
-    |> logout()
+    |> Guard.logout()
     |> redirect(to: session_path(conn, :new))
-  end
-
-  defp logout(conn) do
-    conn
-    |> Guardian.Plug.sign_out()
   end
 end
