@@ -9,3 +9,18 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias NsgAcs.Repo
+alias NsgAcs.Auth.User
+
+admin_params = %{
+  username: "admin",
+  password: "admin",
+  is_admin: true
+}
+
+unless Repo.get_by(User, username: admin_params[:username]) do
+  %User{}
+  |> User.changeset(admin_params)
+  |> Repo.insert!()
+end
