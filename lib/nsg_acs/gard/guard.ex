@@ -1,11 +1,11 @@
 defmodule NsgAcs.Guard do
-  use NsgAcsWeb, :controller
   alias NsgAcs.Guard.Guardian
+  alias Plug.Conn
 
   def login(conn, user) do
     conn
     |> Guardian.Plug.sign_in(user)
-    |> assign(:current_user, user)
+    |> Conn.assign(:current_user, user)
   end
 
   def logout(conn) do
@@ -15,7 +15,7 @@ defmodule NsgAcs.Guard do
 
   def load_current_user(conn, _) do
     conn
-    |> assign(:current_user, Guardian.Plug.current_resource(conn))
+    |> Conn.assign(:current_user, Guardian.Plug.current_resource(conn))
   end
 
   def is_admin(conn = %{assigns: %{current_user: %{is_admin: true}}}, _opts) do
@@ -24,6 +24,6 @@ defmodule NsgAcs.Guard do
 
   def is_admin(conn, _opts) do
     conn
-    |> halt()
+    |> Conn.halt()
   end
 end
