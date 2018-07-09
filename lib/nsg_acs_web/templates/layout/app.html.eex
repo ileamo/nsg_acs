@@ -48,7 +48,7 @@
         <p class="alert alert-info">
           <%= ai %>
         </p>
-        <%= end %>
+        <% end %>
 
         <%= render @view_module, @view_template, assigns %>
       </div>
