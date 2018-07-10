@@ -1,5 +1,4 @@
-<h2>New User</h2>
+<%= link "Список пользователей", to: user_path(@conn, :index), class: "btn btn-default btn-xs" %>
+<h2>Новый пользователь</h2>
 
 <%= render "form.html", Map.put(assigns, :action, user_path(@conn, :create)) %>
-
-<span><%= link "Back", to: user_path(@conn, :index) %></span>

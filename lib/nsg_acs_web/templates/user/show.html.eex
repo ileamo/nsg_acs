@@ -1,23 +1,22 @@
-<h2>Show User</h2>
+<%= link "Редактировать", to: user_path(@conn, :edit, @user), class: "btn btn-default btn-xs" %>
+<%= link "Список пользователей", to: user_path(@conn, :index), class: "btn btn-default btn-xs" %>
+<h2>Пользователь</h2>
 
 <ul>
 
   <li>
-    <strong>Username:</strong>
+    <strong>Имя:</strong>
     <%= @user.username %>
   </li>
 
   <li>
-    <strong>Password hash:</strong>
+    <strong>Хэш пароля:</strong>
     <%= @user.password_hash %>
   </li>
 
   <li>
-    <strong>Is admin:</strong>
+    <strong>Админ:</strong>
     <%= @user.is_admin %>
   </li>
 
 </ul>
-
-<span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>
