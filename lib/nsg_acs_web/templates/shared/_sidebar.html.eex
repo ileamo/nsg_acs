@@ -2,6 +2,11 @@
   <div class="menu_section">
     <h3>Таблицы</h3>
     <ul class="nav side-menu">
+      <%= if is_admin(@conn) do %>
+      <li>
+        <%= link "Пользователи", to: user_path(@conn, :index) %>
+      </li>
+      <% end %>
       <li>
         <%= link "Группы", to: group_path(@conn, :index) %>
       </li>

@@ -3,9 +3,8 @@ defmodule NsgAcsWeb.UserController do
 
   alias NsgAcs.Auth
   alias NsgAcs.Auth.User
-  import NsgAcs.Guard, only: [load_current_user: 2, is_admin: 2]
+  import NsgAcs.Guard, only: [is_admin: 2]
 
-  plug :load_current_user
   plug :is_admin
 
   def index(conn, _params) do

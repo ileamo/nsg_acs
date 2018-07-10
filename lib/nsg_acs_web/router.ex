@@ -1,5 +1,6 @@
 defmodule NsgAcsWeb.Router do
   use NsgAcsWeb, :router
+  import NsgAcs.Guard, only: [load_current_user: 2]
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -15,6 +16,7 @@ defmodule NsgAcsWeb.Router do
 
   pipeline :auth do
     plug(NsgAcs.Guard.AuthAccessPipeline)
+    plug :load_current_user
   end
 
   scope "/", NsgAcsWeb do
