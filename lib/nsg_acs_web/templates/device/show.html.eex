@@ -35,9 +35,18 @@
 
 </ul>
 
+<% conf = get_conf(@device) %>
+<% valid = validate_conf(conf) %>
+
+<%= if valid do %>
+<code>
+<%= valid %>
+</code>
+<% end %>
+
 <h2>Конфигурация</h2>
   <pre><code>
-    <%= get_conf(@device) %>
+    <%= get_conf(@device) |> number_conf() %>
   </code></pre>
 
 <ul>
