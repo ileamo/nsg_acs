@@ -3,14 +3,14 @@ Definitions.
 KEYWORDS=nil|true|false
 SYMBOLS=[=\n]
 WHITESPACE=[\s\t\r]+
-STRING="([^\\"]|\\.)*"
+STRING="([^\\"\n]|\\.)*"
 KEY=[^="\s\t\r\n]+
 NUM=[0-9]+
 INDENT=(:\s)+
 
 Rules.
 
-{STRING}     : {token, {string, TokenLine, extract_string(TokenChars)}}.
+{STRING}     : {token, {str, TokenLine, extract_string(TokenChars)}}.
 {SYMBOLS}    : {token, {list_to_atom(TokenChars), TokenLine}}.
 {INDENT}     : {token, {indent, TokenLine, {indent, TokenLen div 2}}}.
 {NUM}\.{NUM} : {token, {float, TokenLine, list_to_float(TokenChars)}}.

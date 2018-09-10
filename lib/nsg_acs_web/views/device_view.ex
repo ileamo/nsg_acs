@@ -23,7 +23,7 @@ defmodule NsgAcsWeb.DeviceView do
   end
 
   def validate_conf(conf) do
-    "Error"
+    NSGconfParser.parse(conf)
   end
 
   def device_and_key_params(device) do

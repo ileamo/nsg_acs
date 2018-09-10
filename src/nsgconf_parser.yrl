@@ -1,4 +1,4 @@
-Terminals '=' '\n' nil indent true false key string int float whitespace.
+Terminals '=' '\n' nil indent true false key str int float whitespace.
 Nonterminals config line lines cmd value ws k.
 Rootsymbol config.
 
@@ -6,7 +6,7 @@ k ->
   key : extract_value('$1').
 
 k ->
-  string : extract_value('$1').
+  str : extract_value('$1').
 
 k ->
   int : extract_value('$1').
@@ -24,7 +24,7 @@ cmd ->
   k ws : '$1'.
 
 cmd ->
-  k ws '=' ws value ws: {'$1', '$5'}.
+  k ws '=' ws value ws : {'$1', '$5'}.
 
 line ->
   ws : {0}.
@@ -57,7 +57,7 @@ value ->
   float : extract_value('$1').
 
 value ->
-  string : extract_value('$1').
+  str : extract_value('$1').
 
 Erlang code.
 
