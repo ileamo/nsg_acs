@@ -1,3 +1,3 @@
 #!/bin/sh
 
-release_ctl eval --mfa "MyApp.ReleaseTasks.seed/1" -- "$@"
+release_ctl eval --mfa "NsgAcs.ReleaseTasks.seed/1" -- ""

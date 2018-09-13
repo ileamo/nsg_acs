@@ -6,7 +6,7 @@ defmodule NsgAcs.ReleaseTasks do
     :ecto
   ]
 
-  @repos Application.get_env(:nsg_acs, :repo, [])
+  @repos Application.get_env(:nsg_acs, :ecto_repos, [])
 
   def migrate(_argv) do
     start_services()

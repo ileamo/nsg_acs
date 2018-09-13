@@ -18,12 +18,15 @@ $ cd assets && ./node_modules/brunch/bin/brunch b -p && cd .. && MIX_ENV=prod mi
 
 2. Скопировать
 ```
-$ cp _build/prod/rel/phoenix_distillery/releases/0.0.1/phoenix_distillery.tar.gz local_deploy/
+$ cp _build/prod/rel/nsg_acs/releases/0.0.1/nsg_acs.tar.gz local_deploy/
 ```
 и распаковать
 
-3. Запустить
+3. Запуск
+
 ```
+$ ./bin/nsg_acs migrate
+$ ./bin/nsg_acs seed
 $ PORT=50017 ./bin/nsg_acs start
 ```
 
@@ -32,5 +35,24 @@ $ PORT=50017 ./bin/nsg_acs start
   - пароль для psql postgres:postgres
   убедиться что 'psql -U postgress' работает
 
+  - создать базу данных
+  create database nsg_acs_prod;
+
   - не находила ncurses.so.6
   сделал линк на ncurses.so.5 так как в Ubuntu ncurses.so.6 еще не устанавливалась
+
+
+5. Выпуск следующего релиза
+
+  Поменять номер версии в mix.exs
+
+```
+$ cd assets && ./node_modules/brunch/bin/brunch b -p && cd .. && MIX_ENV=prod mix do phx.digest, release --env=prod --upgrade
+
+$ cp _build/prod/rel/nsg_acs/releases/0.0.2/nsg_acs.tar.gz local_deploy/releases/0.0.2/
+```
+
+На хосте
+```
+$ cd releases/0.0.2
+$ tar -xzf nsg_acs.tar.gz
