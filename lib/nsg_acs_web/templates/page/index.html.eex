@@ -2,6 +2,7 @@
   <div class="page-title">
     <div class="text-center">
       <h3>Сервер автоконфигурации</h3>
+      <h2> ver. <%= version() %> </h2>
     </div>
   </div>
 

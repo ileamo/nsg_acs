@@ -54,5 +54,5 @@ $ cp _build/prod/rel/nsg_acs/releases/0.0.2/nsg_acs.tar.gz local_deploy/releases
 
 На хосте
 ```
-$ cd releases/0.0.2
-$ tar -xzf nsg_acs.tar.gz
+$ ./bin/nsg_acs upgrade 0.0.2
+```
