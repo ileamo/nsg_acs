@@ -1,5 +1,11 @@
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
   <div class="menu_section">
+    <ul class="nav side-menu">
+      <li>
+        <%= link "Главная", to: page_path(@conn, :index) %>
+      </li>
+    </ul>
+
     <h3>Таблицы</h3>
     <ul class="nav side-menu">
       <%= if is_admin(@conn) do %>
@@ -8,7 +14,7 @@
       </li>
       <% end %>
       <li>
-        <%= link "Группы", to: group_path(@conn, :index) %>
+        <%= link "Группы устройств", to: group_path(@conn, :index) %>
       </li>
       <li>
         <%= link "Устройства", to: device_path(@conn, :index) %>
