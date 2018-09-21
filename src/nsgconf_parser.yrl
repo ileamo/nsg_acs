@@ -30,7 +30,7 @@ line ->
   ws : {0}.
 
 line ->
-  cmd : {0,'$1'}.
+  cmd : {{indent, 0},'$1'}.
 
 line ->
   indent cmd : {extract_value('$1'), '$2'}.

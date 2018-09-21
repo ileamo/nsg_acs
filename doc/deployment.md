@@ -56,3 +56,8 @@ $ cp _build/prod/rel/nsg_acs/releases/0.0.2/nsg_acs.tar.gz local_deploy/releases
 ```
 $ ./bin/nsg_acs upgrade 0.0.2
 ```
+
+6. Команда для проверки API
+```
+curl -H "Content-Type: application/json" -X POST -d '{"id":1,"method":"get.conf","params":{"serial_num":"1701000069","nsg_device":"NSG1700"}}' http://10.0.10.155:50017/api
+```
