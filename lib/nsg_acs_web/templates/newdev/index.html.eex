@@ -1,0 +1,32 @@
+<h2>Listing Newdevs</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>From</th>
+      <th>Source</th>
+      <th>Group</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for newdev <- @newdevs do %>
+    <tr>
+      <td><%= newdev.key %></td>
+      <td><%= newdev.from %></td>
+      <td><%= newdev.source %></td>
+      <td><%= newdev.group %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: newdev_path(@conn, :show, newdev), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: newdev_path(@conn, :edit, newdev), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: newdev_path(@conn, :delete, newdev), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Newdev", to: newdev_path(@conn, :new) %></span>
