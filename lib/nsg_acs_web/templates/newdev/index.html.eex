@@ -28,5 +28,3 @@
 <% end %>
   </tbody>
 </table>
-
-<span><%= link "New Newdev", to: newdev_path(@conn, :new) %></span>

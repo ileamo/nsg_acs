@@ -1,5 +1,0 @@
-<h2>New Newdev</h2>
-
-<%= render "form.html", Map.put(assigns, :action, newdev_path(@conn, :create)) %>
-
-<span><%= link "Back", to: newdev_path(@conn, :index) %></span>
