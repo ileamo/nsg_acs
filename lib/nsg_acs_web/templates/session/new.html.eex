@@ -36,7 +36,7 @@
               <%= hidden_input f, :prev_path, value: prev_path %>
 
               <div>
-                    <%= text_input f, :username, placeholder: "Username",  class: "form-control" %>
+                    <%= text_input f, :username, placeholder: "Username", class: "form-control" %>
               </div>
               <div>
                 <%= password_input f, :password, placeholder: "Password", class: "form-control" %>

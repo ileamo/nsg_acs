@@ -22,14 +22,15 @@ defmodule NsgAcsWeb.SessionController do
           "session" => %{"username" => username, "password" => password, "prev_path" => prev_path}
         }
       ) do
+    IO.inspect(params)
     # try to get user by unique username from DB
-    user = Repo.get_by(User, username: username)
+    user = Repo.get_by(User, username: username || "")
     # examine the result
     result =
       cond do
         # if user was found and provided password hash equals to stored
         # hash
-        user && checkpw(password, user.password_hash) ->
+        user && checkpw(password || "", user.password_hash) ->
           {:ok, Guard.login(conn, user)}
 
         # else if we just found the use
