@@ -4,6 +4,7 @@ defmodule NsgAcsWeb.Api.DeviceController do
   alias NsgAcs.DeviceConf
   alias NsgAcs.GroupConf
   alias NsgAcs.RequestLog
+  alias NsgAcs.Discovery
 
   action_fallback(NsgAcsWeb.FallbackController)
 
@@ -55,6 +56,7 @@ defmodule NsgAcsWeb.Api.DeviceController do
       _ ->
         conn
         |> render_and_log_error(id, "no configuration for key #{key}")
+        |> add_discovery(key)
         |> halt()
     end
   end
@@ -103,5 +105,15 @@ defmodule NsgAcsWeb.Api.DeviceController do
   end
 
   defp request_log(_, _) do
+  end
+
+  defp add_discovery(conn = %{remote_ip: ip}, key) do
+    Discovery.insert_or_update_newdev(%{
+      from: ip |> :inet.ntoa() |> to_string(),
+      source: "request",
+      key: key
+    })
+
+    conn
   end
 end

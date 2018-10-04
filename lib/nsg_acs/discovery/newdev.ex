@@ -2,10 +2,9 @@ defmodule NsgAcs.Discovery.Newdev do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "newdevs" do
     field :from, :string
-    field :group, :string
+    field :group, :string, default: "UNKNOWN"
     field :key, :string
     field :source, :string
 

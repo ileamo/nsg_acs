@@ -37,22 +37,13 @@ defmodule NsgAcs.Discovery do
   """
   def get_newdev!(id), do: Repo.get!(Newdev, id)
 
-  @doc """
-  Creates a newdev.
-
-  ## Examples
-
-      iex> create_newdev(%{field: value})
-      {:ok, %Newdev{}}
-
-      iex> create_newdev(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_newdev(attrs \\ %{}) do
-    %Newdev{}
+  def insert_or_update_newdev(attrs = %{key: key}) do
+    case Newdev |> Repo.get_by(key: key) do
+      nil -> %Newdev{}
+      newdev -> newdev
+    end
     |> Newdev.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_or_update()
   end
 
   @doc """
