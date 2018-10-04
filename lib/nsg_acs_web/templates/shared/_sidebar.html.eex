@@ -20,6 +20,9 @@
         <%= link "Устройства", to: device_path(@conn, :index) %>
       </li>
       <li>
+        <%= link "Обнаруженные устройства", to: newdev_path(@conn, :index) %>
+      </li>
+      <li>
         <%= link "Журнал запросов", to: request_path(@conn, :index) %>
       </li>
 

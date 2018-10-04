@@ -13,7 +13,7 @@ defmodule NsgAcsWeb.NewdevController do
     res =
       with {:ok, key} <- get_key(params),
            :ok <- new_dev?(key) do
-        add_discovery(conn, key)
+        add_discovery(conn, params)
       else
         {:error, message} -> message
       end
@@ -29,11 +29,12 @@ defmodule NsgAcsWeb.NewdevController do
       :ok
   end
 
-  defp add_discovery(%{remote_ip: ip}, key) do
+  defp add_discovery(%{remote_ip: ip}, params) do
     Discovery.insert_or_update_newdev(%{
       from: ip |> :inet.ntoa() |> to_string(),
       source: "discovery",
-      key: key
+      key: params["key"],
+      group: params["group"] || "UNKNOWN"
     })
 
     "Устройство добавлено в базу"
