@@ -9,9 +9,9 @@ defmodule NsgAcsWeb.NewdevController do
     render(conn, "index.html", newdevs: newdevs)
   end
 
-  def new(conn, _params) do
-    changeset = Discovery.change_newdev(%Newdev{})
-    render(conn, "new.html", changeset: changeset)
+  def new(conn, params) do
+    IO.inspect(params)
+    render(conn, "new.html", params: params)
   end
 
   def create(conn, %{"newdev" => newdev_params}) do
@@ -20,6 +20,7 @@ defmodule NsgAcsWeb.NewdevController do
         conn
         |> put_flash(:info, "Newdev created successfully.")
         |> redirect(to: newdev_path(conn, :show, newdev))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +45,7 @@ defmodule NsgAcsWeb.NewdevController do
         conn
         |> put_flash(:info, "Newdev updated successfully.")
         |> redirect(to: newdev_path(conn, :show, newdev))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", newdev: newdev, changeset: changeset)
     end
