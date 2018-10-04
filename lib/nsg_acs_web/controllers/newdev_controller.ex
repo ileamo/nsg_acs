@@ -10,32 +10,33 @@ defmodule NsgAcsWeb.NewdevController do
   end
 
   def new(conn, params) do
-    render(conn, "new.html", params: params)
+    res =
+      with {:ok, key} <- get_key(params),
+           :ok <- new_dev?(key) do
+        add_discovery(conn, key)
+      else
+        {:error, message} -> message
+      end
+
+    render(conn, "new.html", params: params, res: res)
   end
 
-  def show(conn, %{"id" => id}) do
-    newdev = Discovery.get_newdev!(id)
-    render(conn, "show.html", newdev: newdev)
+  defp get_key(%{"key" => key}) when is_binary(key), do: {:ok, key}
+  defp get_key(_), do: {:error, "Отсутствует параметр key"}
+
+  defp new_dev?(key) do
+    (NsgAcs.DeviceConf.get_device_by_key(key) && {:error, "Устройство уже зарегистрировано"}) ||
+      :ok
   end
 
-  def edit(conn, %{"id" => id}) do
-    newdev = Discovery.get_newdev!(id)
-    changeset = Discovery.change_newdev(newdev)
-    render(conn, "edit.html", newdev: newdev, changeset: changeset)
-  end
+  defp add_discovery(%{remote_ip: ip}, key) do
+    Discovery.insert_or_update_newdev(%{
+      from: ip |> :inet.ntoa() |> to_string(),
+      source: "discovery",
+      key: key
+    })
 
-  def update(conn, %{"id" => id, "newdev" => newdev_params}) do
-    newdev = Discovery.get_newdev!(id)
-
-    case Discovery.update_newdev(newdev, newdev_params) do
-      {:ok, newdev} ->
-        conn
-        |> put_flash(:info, "Newdev updated successfully.")
-        |> redirect(to: newdev_path(conn, :show, newdev))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", newdev: newdev, changeset: changeset)
-    end
+    "Устройство добавлено в базу"
   end
 
   def delete(conn, %{"id" => id}) do
