@@ -23,15 +23,18 @@
 
             <% ai = get_flash(@conn,:error) %>
             <%= if ai do %>
-            <div class="clearfix"></div>
+            <div class="clearfix"></div>*
             <p class="alert alert-error">
               <%= ai %>
             </p>
             <% end %>
 
+            <% prev_path = assigns[:prev_path] || "/" %>
 
             <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>
               <h1>Сервер автоконфигурации</h1>
+              <%= hidden_input f, :prev_path, value: prev_path %>
+
               <div>
                     <%= text_input f, :username, placeholder: "Username",  class: "form-control" %>
               </div>

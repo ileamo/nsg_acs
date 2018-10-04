@@ -7,13 +7,21 @@ defmodule NsgAcsWeb.SessionController do
 
   plug :scrub_params, "session" when action in ~w(create)a
 
-  def new(conn, _) do
+  def new(conn, params = %{"prev_path" => _prev_path}), do: new_aux(conn, params)
+  def new(conn, _), do: new_aux(conn, %{"prev_path" => "/"})
+
+  defp new_aux(conn, %{"prev_path" => prev_path}) do
     conn
     |> put_layout(false)
-    |> render("new.html")
+    |> render("new.html", prev_path: prev_path)
   end
 
-  def create(conn, %{"session" => %{"username" => username, "password" => password}}) do
+  def create(
+        conn,
+        params = %{
+          "session" => %{"username" => username, "password" => password, "prev_path" => prev_path}
+        }
+      ) do
     # try to get user by unique username from DB
     user = Repo.get_by(User, username: username)
     # examine the result
@@ -39,7 +47,7 @@ defmodule NsgAcsWeb.SessionController do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "You’re now logged in!")
-        |> redirect(to: page_path(conn, :index))
+        |> redirect(to: prev_path)
 
       {:error, _reason, conn} ->
         conn

@@ -5,6 +5,8 @@ defmodule NsgAcs.Guard.AuthErrorHandler do
 
   def auth_error(conn, {_type, _reason}, _opts) do
     conn
-    |> Phoenix.Controller.redirect(to: session_path(conn, :new))
+    |> Phoenix.Controller.redirect(
+      to: session_path(conn, :new, prev_path: "#{conn.request_path}?#{conn.query_string}")
+    )
   end
 end

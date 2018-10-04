@@ -10,20 +10,7 @@ defmodule NsgAcsWeb.NewdevController do
   end
 
   def new(conn, params) do
-    IO.inspect(params)
     render(conn, "new.html", params: params)
-  end
-
-  def create(conn, %{"newdev" => newdev_params}) do
-    case Discovery.create_newdev(newdev_params) do
-      {:ok, newdev} ->
-        conn
-        |> put_flash(:info, "Newdev created successfully.")
-        |> redirect(to: newdev_path(conn, :show, newdev))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
   end
 
   def show(conn, %{"id" => id}) do
