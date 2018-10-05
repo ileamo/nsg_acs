@@ -48,4 +48,17 @@ defmodule NsgAcsWeb.NewdevController do
     |> put_flash(:info, "Newdev deleted successfully.")
     |> redirect(to: newdev_path(conn, :index))
   end
+
+  def edit(conn, %{"id" => id}) do
+    newdev = Discovery.get_newdev!(id)
+    changeset = Discovery.change_newdev(newdev)
+    render(conn, "edit.html", newdev: newdev, changeset: changeset)
+  end
+
+  def update(conn, params) do
+    IO.inspect(params)
+
+    conn
+    |> redirect(to: newdev_path(conn, :index))
+  end
 end

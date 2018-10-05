@@ -1,0 +1,21 @@
+<div style="max-width:950px">
+<%= form_for @changeset, newdev_path(@conn, :update, @newdev), fn f -> %>
+
+
+    <p> <%= inspect(@newdev) %> </p>
+
+    <h2> Добавить устройство <%= @newdev.key %> </h2>
+
+    <div class="form-group row">
+      <%= label f, "в группу", class: "col-sm-2 col-form-label" %>
+      <div class="col-sm-10">
+        <%= select f, :group, NsgAcs.GroupConf.list_group_names(@newdev.group), class: "form-control" %>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

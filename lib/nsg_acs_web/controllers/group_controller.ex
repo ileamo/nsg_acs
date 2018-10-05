@@ -20,6 +20,7 @@ defmodule NsgAcsWeb.GroupController do
         conn
         |> put_flash(:info, "Group created successfully.")
         |> redirect(to: group_path(conn, :show, group))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +45,7 @@ defmodule NsgAcsWeb.GroupController do
         conn
         |> put_flash(:info, "Group updated successfully.")
         |> redirect(to: group_path(conn, :show, group))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", group: group, changeset: changeset)
     end

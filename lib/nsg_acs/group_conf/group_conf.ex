@@ -21,6 +21,11 @@ defmodule NsgAcs.GroupConf do
     Repo.all(Group)
   end
 
+  def list_group_names(first) do
+    list = Repo.all(from(g in Group, order_by: g.name, select: g.name))
+    (first in list && [first | list |> Enum.reject(fn x -> x == first end)]) || list
+  end
+
   @doc """
   Gets a single group.
 

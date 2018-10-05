@@ -36,7 +36,9 @@
                 <td><%= newdev.source %></td>
 
                 <td class="text-right">
-                  <span><%= link "Delete", to: newdev_path(@conn, :delete, newdev), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+                  <%= link "Добавить в группу", to: newdev_path(@conn, :edit, newdev), class: "btn btn-default btn-xs"  %>
+                  <span><%= link "Удалить", to: newdev_path(@conn, :delete, newdev), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+
                 </td>
               </tr>
           <% end %>

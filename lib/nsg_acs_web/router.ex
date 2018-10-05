@@ -36,7 +36,7 @@ defmodule NsgAcsWeb.Router do
     resources("/groups", GroupController)
     resources("/devices", DeviceController)
     resources("/requests", RequestController, only: [:index, :show, :delete])
-    resources("/newdevs", NewdevController, only: [:index, :delete, :new])
+    resources("/newdevs", NewdevController, only: [:index, :delete, :new, :edit, :update])
   end
 
   scope "/api", NsgAcsWeb.Api, as: :api do
