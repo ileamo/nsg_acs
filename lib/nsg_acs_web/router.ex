@@ -30,6 +30,7 @@ defmodule NsgAcsWeb.Router do
     pipe_through([:browser, :auth])
 
     get("/", PageController, :index)
+    get("/discovery", PageController, :discovery)
     resources("/users", UserController)
     resources("/session", SessionController, only: [:delete])
     resources("/groups", GroupController)
