@@ -13,6 +13,18 @@
 </ul>
 <h1> <%= @res %> </h1>
 
+<ul>
+
+  <%= for {k, v} <- @env do %>
+  <li>
+    <strong><%= k %>:</strong>
+    <%= v %>
+  </li>
+  <% end %>
+
+</ul>
+
+
 <%= if @newdev do %>
   <%= link "Добавить в группу", to: newdev_path(@conn, :edit, @newdev), class: "btn btn-default btn-xs"  %>
 <% end %>

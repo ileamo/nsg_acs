@@ -10,34 +10,48 @@ defmodule NsgAcsWeb.NewdevController do
   end
 
   def new(conn, params) do
-    {res, newdev} =
-      with {:ok, key} <- get_key(params),
+    {res, newdev, env} =
+      with {:ok, env = %{key: key}} <- get_env(params),
            :ok <- new_dev?(key) do
-        add_discovery(conn, params)
+        add_discovery(conn, env)
       else
-        {:error, message} -> {message, nil}
+        {:error, message} -> {message, nil, nil}
       end
 
-    render(conn, "new.html", params: params, res: res, newdev: newdev)
+    render(conn, "new.html", params: params, res: res, env: env, newdev: newdev)
   end
 
-  defp get_key(%{"key" => key}) when is_binary(key), do: {:ok, key}
-  defp get_key(_), do: {:error, "Отсутствует параметр key"}
+  defp get_env(%{"text" => text}) when is_binary(text) do
+    ~r/([^\s=,;]+)\s*=\s*([^\s=,;]+)/
+    |> Regex.scan(text)
+    |> Enum.map(fn [_, k, v] -> {k, v} end)
+    |> Enum.into(%{})
+    |> find_key()
+  end
+
+  defp get_env(_), do: {:error, "Содержимое QR кода должно быть передано в параметре text"}
+
+  defp find_key(parms = %{"key" => key}), do: {:ok, parms |> Map.put(:key, key)}
+
+  defp find_key(parms = %{"dev" => dev, "sn" => sn}),
+    do: {:ok, parms |> Map.put(:key, "#{dev}_#{sn}")}
+
+  defp find_key(_), do: {:error, "Не удалось найти значение ключа"}
 
   defp new_dev?(key) do
     (NsgAcs.DeviceConf.get_device_by_key(key) && {:error, "Устройство уже зарегистрировано"}) ||
       :ok
   end
 
-  defp add_discovery(%{remote_ip: ip}, params) do
+  defp add_discovery(%{remote_ip: ip}, env) do
     case Discovery.insert_or_update_newdev(%{
            from: ip |> :inet.ntoa() |> to_string(),
            source: "discovery",
-           key: params["key"],
-           group: params["group"] || "UNKNOWN"
+           key: env.key,
+           group: env["group"] || "UNKNOWN"
          }) do
-      {:ok, newdev} -> {"Устройство добавлено в базу", newdev}
-      {:error, newdev} -> {"Ошибка БД: #{inspect(newdev.errors)}", nil}
+      {:ok, newdev} -> {"Устройство добавлено в базу", newdev, env}
+      {:error, newdev} -> {"Ошибка БД: #{inspect(newdev.errors)}", nil, env}
     end
   end
 
