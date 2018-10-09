@@ -3,6 +3,7 @@ defmodule NsgAcsWeb.NewdevController do
 
   alias NsgAcs.Discovery
   alias NsgAcs.Discovery.Newdev
+  alias NsgAcs.GroupConf
 
   def index(conn, _params) do
     newdevs = Discovery.list_newdevs()
@@ -55,10 +56,12 @@ defmodule NsgAcsWeb.NewdevController do
     render(conn, "edit.html", newdev: newdev, changeset: changeset)
   end
 
-  def update(conn, params) do
-    IO.inspect(params)
+  def update(conn, %{"id" => id, "newdev" => %{"group" => group_name, "key" => key}}) do
+    Discovery.get_newdev!(id) |> Discovery.delete_newdev()
+
+    %{id: id} = GroupConf.get_group_by_name(group_name)
 
     conn
-    |> redirect(to: newdev_path(conn, :index))
+    |> redirect(to: device_path(conn, :new, group_id: id, group_name: group_name, key: key))
   end
 end

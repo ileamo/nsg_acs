@@ -42,6 +42,8 @@ defmodule NsgAcs.GroupConf do
   """
   def get_group!(id), do: Repo.get!(Group, id)
 
+  def get_group_by_name(name), do: Repo.get_by(Group, name: name)
+
   @doc """
   Creates a group.
 

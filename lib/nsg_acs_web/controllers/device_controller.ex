@@ -10,8 +10,8 @@ defmodule NsgAcsWeb.DeviceController do
     render(conn, "index.html", devices: devices)
   end
 
-  def new(conn, %{"group_id" => group_id}) do
-    changeset = DeviceConf.change_device(%Device{})
+  def new(conn, params = %{"group_id" => group_id}) do
+    changeset = DeviceConf.change_device(%Device{key: params["key"]})
     group = GroupConf.get_group!(group_id)
     templ_params = GroupConf.get_params_from_template(group.template)
 
@@ -19,7 +19,7 @@ defmodule NsgAcsWeb.DeviceController do
       conn,
       "new.html",
       changeset: changeset,
-      group_id: group_id,
+      device: %Device{group: group},
       templ_params: templ_params,
       params: nil
     )
@@ -42,8 +42,8 @@ defmodule NsgAcsWeb.DeviceController do
         render(
           conn,
           "new.html",
+          device: %Device{group: group},
           changeset: changeset,
-          group_id: group_id,
           templ_params: templ_params,
           params: nil
         )
@@ -69,7 +69,6 @@ defmodule NsgAcsWeb.DeviceController do
       "edit.html",
       device: device,
       changeset: changeset,
-      group_id: device.group.id,
       templ_params: templ_params,
       params: device.params
     )
@@ -95,7 +94,6 @@ defmodule NsgAcsWeb.DeviceController do
           "edit.html",
           device: device,
           changeset: changeset,
-          group_id: group_id,
           templ_params: templ_params,
           params: nil
         )

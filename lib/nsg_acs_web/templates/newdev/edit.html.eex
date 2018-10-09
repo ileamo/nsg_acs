@@ -1,9 +1,6 @@
 <div style="max-width:950px">
 <%= form_for @changeset, newdev_path(@conn, :update, @newdev), fn f -> %>
 
-
-    <p> <%= inspect(@newdev) %> </p>
-
     <h2> Добавить устройство <%= @newdev.key %> </h2>
 
     <div class="form-group row">
@@ -12,6 +9,8 @@
         <%= select f, :group, NsgAcs.GroupConf.list_group_names(@newdev.group), class: "form-control" %>
       </div>
     </div>
+
+    <%= hidden_input f, :key, value: @newdev.key %>
 
 
     <div class="form-group">
