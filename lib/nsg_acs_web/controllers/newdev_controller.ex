@@ -2,7 +2,6 @@ defmodule NsgAcsWeb.NewdevController do
   use NsgAcsWeb, :controller
 
   alias NsgAcs.Discovery
-  alias NsgAcs.Discovery.Newdev
   alias NsgAcs.GroupConf
 
   def index(conn, _params) do
@@ -11,15 +10,15 @@ defmodule NsgAcsWeb.NewdevController do
   end
 
   def new(conn, params) do
-    res =
+    {res, newdev} =
       with {:ok, key} <- get_key(params),
            :ok <- new_dev?(key) do
         add_discovery(conn, params)
       else
-        {:error, message} -> message
+        {:error, message} -> {message, nil}
       end
 
-    render(conn, "new.html", params: params, res: res)
+    render(conn, "new.html", params: params, res: res, newdev: newdev)
   end
 
   defp get_key(%{"key" => key}) when is_binary(key), do: {:ok, key}
@@ -31,14 +30,15 @@ defmodule NsgAcsWeb.NewdevController do
   end
 
   defp add_discovery(%{remote_ip: ip}, params) do
-    Discovery.insert_or_update_newdev(%{
-      from: ip |> :inet.ntoa() |> to_string(),
-      source: "discovery",
-      key: params["key"],
-      group: params["group"] || "UNKNOWN"
-    })
-
-    "Устройство добавлено в базу"
+    case Discovery.insert_or_update_newdev(%{
+           from: ip |> :inet.ntoa() |> to_string(),
+           source: "discovery",
+           key: params["key"],
+           group: params["group"] || "UNKNOWN"
+         }) do
+      {:ok, newdev} -> {"Устройство добавлено в базу", newdev}
+      {:error, newdev} -> {"Ошибка БД: #{inspect(newdev.errors)}", nil}
+    end
   end
 
   def delete(conn, %{"id" => id}) do

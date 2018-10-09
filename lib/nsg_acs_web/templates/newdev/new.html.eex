@@ -12,3 +12,7 @@
 
 </ul>
 <h1> <%= @res %> </h1>
+
+<%= if @newdev do %>
+  <%= link "Добавить в группу", to: newdev_path(@conn, :edit, @newdev), class: "btn btn-default btn-xs"  %>
+<% end %>
