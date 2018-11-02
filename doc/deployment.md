@@ -63,3 +63,37 @@ curl -H "Content-Type: application/json" -X POST -d '{"id":1,"method":"get.conf"
 ```
 7. Если требуется миграция БД, то с upgrade не проходит.
 Надо устанавливать новый релиз.
+
+
+
+
+--------------
+
+Кросс компиляция
+
+ В файле rel/config.exs указываем на erts целевой машины
+
+``` elixir
+environment :prod do
+  set(include_erts: "/home/igor/nsg/LoRa/releases/erlang-releases/arm/erlang")
+  # set(include_erts: true)
+  set(include_src: false)
+  set(cookie: :"^AeHb9LTSC&NT1rV$*[~,S%Q]Jh[&$`R7O&]LZ>rsve%odMQjpL,Ky;tx.X4O0({")
+end
+```
+При генерации путаница с библиотеками. Поэтому
+
+``` bash
+cd assets && ./node_modules/brunch/bin/brunch b -p && cd .. && MIX_ENV=prod mix do phx.digest, release --env=prod
+cd _build/prod/rel/
+rm nsg_notifier/releases/0.0.1/nsg_notifier.tar.gz
+tar -czf nsg_notifier.tar.gz nsg_notifier
+scp nsg_notifier.tar.gz root@10.0.10.102:/mnt/lora/usr/lib
+```
+
+На устройстве
+``` bash
+tar -xzf nsg_notifier.tar.gz
+cd nsg_notifier
+LC_ALL=ru_RU.utf8 PORT=4001 bin/nsg_notifier console
+```
