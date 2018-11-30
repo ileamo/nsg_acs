@@ -31,7 +31,7 @@ defmodule NsgAcs.Link do
   end
 
   def handle_info(msg, state) do
-    Logger.warn("Link derver: unknown message: #{inspect(msg)}")
+    Logger.warn("Link server: unknown message: #{inspect(msg)}")
     {:noreply, state}
   end
 end
