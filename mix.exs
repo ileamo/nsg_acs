@@ -44,7 +44,8 @@ defmodule NsgAcs.Mixfile do
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:distillery, "~> 2.0"}
+      {:distillery, "~> 2.0"},
+      {:tunctl, git: "https://github.com/msantos/tunctl.git"}
     ]
   end
 
