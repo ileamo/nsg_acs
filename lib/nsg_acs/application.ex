@@ -14,6 +14,7 @@ defmodule NsgAcs.Application do
       supervisor(NsgAcsWeb.Endpoint, []),
       # Start your own worker by calling: NsgAcs.Worker.start_link(arg1, arg2, arg3)
       # worker(NsgAcs.Worker, [arg1, arg2, arg3]),
+      NsgAcs.TunSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
