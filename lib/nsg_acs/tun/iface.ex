@@ -5,7 +5,8 @@ defmodule NsgAcs.Iface do
   @moduledoc """
   For IPv4 addresses, beam needs to have privileges to configure interfaces.
   To add cap_net_admin capabilities:
-  sudo setcap cap_net_admin=ep /path/to/bin/beam.smp
+  lubuntu:
+  sudo setcap cap_net_admin=ep /usr/lib/erlang/erts-10.1/bin/beam.smp cap_net_admin=ep /bin/ip
   """
 
   def start_link(params) do
@@ -16,10 +17,23 @@ defmodule NsgAcs.Iface do
   @impl true
   def init(state) do
     {:ok, ref} = :tuncer.create(<<>>, [:tun, :no_pi, active: true])
-    :tuncer.up(ref, '192.168.123.4')
     name = :tuncer.devname(ref)
-    Logger.debug("Create iface #{name}")
-    {:ok, state |> Map.put(:ifname, name)}
+
+    with {_, 0} <-
+           System.cmd(
+             "ip",
+             ["address", "add", "192.168.123.4/32", "peer", "192.168.123.5", "dev", name],
+             stderr_to_stdout: true
+           ),
+         {_, 0} <- System.cmd("ip", ["link", "set", name, "up"], stderr_to_stdout: true) do
+      Logger.debug("Create iface #{name}")
+      {:ok, state |> Map.put(:ifname, name)}
+    else
+      {err, _} ->
+        Logger.error(err)
+        :tuncer.destroy(ref)
+        {:stop, err}
+    end
   end
 
   @impl true
