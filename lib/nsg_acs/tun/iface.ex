@@ -7,6 +7,8 @@ defmodule NsgAcs.Iface do
   To add cap_net_admin capabilities:
   lubuntu:
   sudo setcap cap_net_admin=ep /usr/lib/erlang/erts-10.1/bin/beam.smp cap_net_admin=ep /bin/ip
+  gentoo:
+  sudo setcap cap_net_admin=ep /usr/lib64/erlang/erts-10.1.1/bin/beam.smp cap_net_admin=ep /bin/ip
   """
 
   def start_link(params) do
@@ -15,8 +17,10 @@ defmodule NsgAcs.Iface do
 
   ## Callbacks
   @impl true
-  def init(state) do
+  def init(link_params) do
+    Logger.debug("START IFACE: #{inspect(link_params)}")
     {:ok, ref} = :tuncer.create(<<>>, [:tun, :no_pi, active: true])
+    :tuncer.persist(ref, false)
     name = :tuncer.devname(ref)
 
     with {_, 0} <-
@@ -27,7 +31,8 @@ defmodule NsgAcs.Iface do
            ),
          {_, 0} <- System.cmd("ip", ["link", "set", name, "up"], stderr_to_stdout: true) do
       Logger.debug("Create iface #{name}")
-      {:ok, state |> Map.put(:ifname, name)}
+      state = %{ifsocket: ref, ifname: name, links_list: [link_params]}
+      {:ok, state}
     else
       {err, _} ->
         Logger.error(err)
@@ -37,9 +42,23 @@ defmodule NsgAcs.Iface do
   end
 
   @impl true
-  def handle_info({:tuntap, _pid, packet}, state) do
-    Logger.debug("Iface #{state[:name]}: receive #{byte_size(packet)} bytes #{inspect(packet)}")
+  def handle_call({:send, packet}, _from, state = %{ifsocket: ifsocket}) do
+    Logger.debug("IFACE handle_call, packet: #{inspect(packet)}")
+    :tuncer.send(ifsocket, to_string(packet))
+    {:reply, :ok, state}
+  end
+
+  @impl true
+  def handle_info({:tuntap, _pid, packet}, state = %{links_list: [%{pid: link_pid} | _]}) do
+    Logger.debug("Iface #{state[:ifname]}: receive #{byte_size(packet)}")
+    GenServer.call(link_pid, {:send, packet})
     {:noreply, state}
+  end
+
+  def handle_info({:tuntap_error, _pid, reason}, state = %{links_list: links_list}) do
+    Logger.error("Iface #{state[:ifname]}: #{inspect(reason)}")
+    links_list |> Enum.each(fn %{pid: pid} -> GenServer.cast(pid, :terminate) end)
+    {:stop, :normal, state}
   end
 
   def handle_info(msg, state) do

@@ -1,6 +1,5 @@
 defmodule NsgAcs.Listener do
   use Task, restart: :permanent
-  alias NsgAcs.LinkSupervisor
 
   def start_link(arg) do
     Task.start_link(__MODULE__, :run, [arg])
@@ -20,7 +19,7 @@ defmodule NsgAcs.Listener do
 
   defp accept_loop(l) do
     {:ok, sock} = :ssl.transport_accept(l)
-    {:ok, _pid} = LinkSupervisor.start_child(sock)
+    {:ok, _pid} = NsgAcs.Link.start_child(sock)
     accept_loop(l)
   end
 end
