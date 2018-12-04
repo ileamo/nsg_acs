@@ -10,11 +10,4 @@ defmodule NsgAcs.LinkSupervisor do
   def init(_arg) do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
-
-  def start_child(sock) do
-    DynamicSupervisor.start_child(
-      __MODULE__,
-      NsgAcs.Link.child_spec(sock)
-    )
-  end
 end
