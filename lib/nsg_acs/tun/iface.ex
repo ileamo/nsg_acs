@@ -44,16 +44,16 @@ defmodule NsgAcs.Iface do
   end
 
   @impl true
-  def handle_call({:send, packet}, _from, state = %{ifsocket: ifsocket}) do
-    Logger.debug("IFACE handle_call, packet: #{inspect(packet)}")
+  def handle_cast({:send, packet}, state = %{ifsocket: ifsocket}) do
     :tuncer.send(ifsocket, to_string(packet))
-    {:reply, :ok, state}
+    Logger.debug("IFACE SEND, packet: #{length(packet)}")
+    {:noreply, state}
   end
 
   @impl true
   def handle_info({:tuntap, _pid, packet}, state = %{links_list: [%{pid: link_pid} | _]}) do
     Logger.debug("Iface #{state[:ifname]}: receive #{byte_size(packet)}")
-    GenServer.call(link_pid, {:send, packet})
+    GenServer.cast(link_pid, {:send, packet})
     {:noreply, state}
   end
 

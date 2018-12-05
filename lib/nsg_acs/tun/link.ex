@@ -34,16 +34,16 @@ defmodule NsgAcs.Link do
   end
 
   @impl true
-  def handle_call({:send, packet}, _from, state = %{sslsocket: sslsocket}) do
+  def handle_cast({:send, packet}, state = %{sslsocket: sslsocket}) do
     :ssl.send(sslsocket, packet)
-    {:reply, :ok, state}
+    Logger.debug("SSL SEND #{byte_size(packet)} bytes")
+    {:noreply, state}
   end
 
   @impl true
   def handle_info({:ssl, _sslsocket, data}, state = %{iface_pid: iface_pid}) do
-    Logger.debug("Receive data: #{inspect(data)}")
-    GenServer.call(iface_pid, {:send, data})
-
+    Logger.debug("SSL RECEIVE #{length(data)} bytes")
+    GenServer.cast(iface_pid, {:send, data})
     {:noreply, state}
   end
 
