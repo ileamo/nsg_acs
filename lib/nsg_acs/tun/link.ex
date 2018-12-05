@@ -1,6 +1,7 @@
 defmodule NsgAcs.Link do
   require Logger
   use GenServer, restart: :temporary
+  alias NsgAcs.Iface
 
   def start_link(sock) do
     GenServer.start_link(__MODULE__, sock)
@@ -12,15 +13,19 @@ defmodule NsgAcs.Link do
     Logger.debug("START LINK: #{inspect(sock)}")
     :ssl.controlling_process(sock, self())
     {:ok, sslsock} = :ssl.handshake(sock)
-    {:ok, %{sslsocket: sslsock, pid: self()}, {:continue, :init}}
+    {:ok, sender_pid} = NsgAcs.LinkSender.start_link(%{sslsocket: sslsock})
+    {:ok, %{sslsocket: sslsock, pid: self(), sender_pid: sender_pid}, {:continue, :init}}
   end
 
   @impl true
-  def handle_continue(:init, state) do
+  def handle_continue(:init, %{sender_pid: sender_pid} = state) do
     case NsgAcs.Iface.start_child(state) do
-      {:ok, pid} ->
-        iface_sender_pid = NsgAcs.Iface.get_iface_sender_pid(pid)
-        {:noreply, state |> Map.merge(%{iface_pid: pid, iface_sender_pid: iface_sender_pid})}
+      {:ok, iface_pid} ->
+        iface_sender_pid = Iface.get_iface_sender_pid(iface_pid)
+        Iface.set_link_sender_pid(iface_pid, self(), sender_pid)
+
+        {:noreply,
+         state |> Map.merge(%{iface_pid: iface_pid, iface_sender_pid: iface_sender_pid})}
 
       {:error, error} ->
         Logger.error("Can't create link server: #{inspect(error)}")
@@ -31,13 +36,6 @@ defmodule NsgAcs.Link do
   @impl true
   def handle_cast(:terminate, state) do
     {:stop, :normal, state}
-  end
-
-  @impl true
-  def handle_cast({:send, packet}, state = %{sslsocket: sslsocket}) do
-    :ssl.send(sslsocket, packet)
-    Logger.debug("SSL SEND #{byte_size(packet)} bytes")
-    {:noreply, state}
   end
 
   @impl true
@@ -66,5 +64,27 @@ defmodule NsgAcs.Link do
       NsgAcs.LinkSupervisor,
       child_spec(sock)
     )
+  end
+end
+
+defmodule NsgAcs.LinkSender do
+  require Logger
+  use GenServer, restart: :temporary
+
+  def start_link(state) do
+    GenServer.start_link(__MODULE__, state)
+  end
+
+  ## Callbacks
+  @impl true
+  def init(state) do
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_cast({:send, packet}, state = %{sslsocket: sslsocket}) do
+    :ssl.send(sslsocket, packet)
+    Logger.debug("SEND TO SSL #{byte_size(packet)} bytes")
+    {:noreply, state}
   end
 end

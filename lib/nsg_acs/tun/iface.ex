@@ -50,14 +50,25 @@ defmodule NsgAcs.Iface do
   end
 
   @impl true
+  def handle_cast({:set_link_sender_pid, _pid, sender_pid}, %{links_list: links_list} = state) do
+    links_list =
+      links_list |> List.update_at(0, fn x -> x |> Map.put(:sender_pid, sender_pid) end)
+
+    {:noreply, state |> Map.put(:links_list, links_list)}
+  end
+
+  @impl true
   def handle_call(:get_iface_sender_pid, _from, %{iface_sender_pid: iface_sender_pid} = state) do
     {:reply, iface_sender_pid, state}
   end
 
   @impl true
-  def handle_info({:tuntap, _pid, packet}, state = %{links_list: [%{pid: link_pid} | _]}) do
+  def handle_info(
+        {:tuntap, _pid, packet},
+        state = %{links_list: [%{sender_pid: link_sender_pid} | _]}
+      ) do
     Logger.debug("Iface #{state[:ifname]}: receive #{byte_size(packet)}")
-    GenServer.cast(link_pid, {:send, packet})
+    GenServer.cast(link_sender_pid, {:send, packet})
     {:noreply, state}
   end
 
@@ -82,6 +93,10 @@ defmodule NsgAcs.Iface do
 
   def get_iface_sender_pid(pid) do
     GenServer.call(pid, :get_iface_sender_pid)
+  end
+
+  def set_link_sender_pid(iface_pid, link_pid, link_sender_pid) do
+    GenServer.cast(iface_pid, {:set_link_sender_pid, link_pid, link_sender_pid})
   end
 end
 
