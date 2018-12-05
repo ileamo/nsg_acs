@@ -19,8 +19,8 @@ defmodule NsgAcs.Link do
   def handle_continue(:init, state) do
     case NsgAcs.Iface.start_child(state) do
       {:ok, pid} ->
-        Logger.debug("Iface pid: #{inspect(pid)}")
-        {:noreply, state |> Map.put(:iface_pid, pid)}
+        iface_sender_pid = NsgAcs.Iface.get_iface_sender_pid(pid)
+        {:noreply, state |> Map.merge(%{iface_pid: pid, iface_sender_pid: iface_sender_pid})}
 
       {:error, error} ->
         Logger.error("Can't create link server: #{inspect(error)}")
@@ -41,9 +41,9 @@ defmodule NsgAcs.Link do
   end
 
   @impl true
-  def handle_info({:ssl, _sslsocket, data}, state = %{iface_pid: iface_pid}) do
+  def handle_info({:ssl, _sslsocket, data}, state = %{iface_sender_pid: iface_sender_pid}) do
     Logger.debug("SSL RECEIVE #{length(data)} bytes")
-    GenServer.cast(iface_pid, {:send, data})
+    GenServer.cast(iface_sender_pid, {:send, data})
     {:noreply, state}
   end
 

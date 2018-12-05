@@ -21,9 +21,10 @@ defmodule NsgAcs.Iface do
   @impl true
   def init(link_params) do
     Logger.debug("START IFACE: #{inspect(link_params)}")
-    {:ok, ref} = :tuncer.create(<<>>, [:tun, :no_pi, active: true])
-    :tuncer.persist(ref, false)
-    name = :tuncer.devname(ref)
+    {:ok, ifsocket} = :tuncer.create(<<>>, [:tun, :no_pi, active: true])
+    :tuncer.persist(ifsocket, false)
+    name = :tuncer.devname(ifsocket)
+    {:ok, iface_sender_pid} = NsgAcs.IfaceSender.start_link(%{ifsocket: ifsocket})
 
     with {_, 0} <-
            System.cmd(
@@ -32,22 +33,25 @@ defmodule NsgAcs.Iface do
              stderr_to_stdout: true
            ),
          {_, 0} <- System.cmd("ip", ["link", "set", name, "up"], stderr_to_stdout: true) do
-      Logger.debug("Create iface #{name}")
-      state = %{ifsocket: ref, ifname: name, links_list: [link_params]}
+      state = %{
+        ifsocket: ifsocket,
+        ifname: name,
+        iface_sender_pid: iface_sender_pid,
+        links_list: [link_params]
+      }
+
       {:ok, state}
     else
       {err, _} ->
         Logger.error(err)
-        :tuncer.destroy(ref)
+        :tuncer.destroy(ifsocket)
         {:stop, err}
     end
   end
 
   @impl true
-  def handle_cast({:send, packet}, state = %{ifsocket: ifsocket}) do
-    :tuncer.send(ifsocket, to_string(packet))
-    Logger.debug("IFACE SEND, packet: #{length(packet)}")
-    {:noreply, state}
+  def handle_call(:get_iface_sender_pid, _from, %{iface_sender_pid: iface_sender_pid} = state) do
+    {:reply, iface_sender_pid, state}
   end
 
   @impl true
@@ -74,5 +78,31 @@ defmodule NsgAcs.Iface do
       NsgAcs.LinkSupervisor,
       child_spec(params)
     )
+  end
+
+  def get_iface_sender_pid(pid) do
+    GenServer.call(pid, :get_iface_sender_pid)
+  end
+end
+
+defmodule NsgAcs.IfaceSender do
+  require Logger
+  use GenServer
+
+  def start_link(params) do
+    GenServer.start_link(__MODULE__, params)
+  end
+
+  ## Callbacks
+  @impl true
+  def init(state) do
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_cast({:send, packet}, state = %{ifsocket: ifsocket}) do
+    :tuncer.send(ifsocket, to_string(packet))
+    Logger.debug("IFACE SEND #{length(packet)} bytes")
+    {:noreply, state}
   end
 end
