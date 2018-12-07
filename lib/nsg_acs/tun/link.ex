@@ -21,11 +21,10 @@ defmodule NsgAcs.Link do
   def handle_continue(:init, %{sender_pid: sender_pid} = state) do
     case NsgAcs.Iface.start_child(state) do
       {:ok, iface_pid} ->
-        iface_sender_pid = Iface.get_iface_sender_pid(iface_pid)
+        ifsender_pid = Iface.get_ifsender_pid(iface_pid)
         Iface.set_link_sender_pid(iface_pid, self(), sender_pid)
 
-        {:noreply,
-         state |> Map.merge(%{iface_pid: iface_pid, iface_sender_pid: iface_sender_pid})}
+        {:noreply, state |> Map.merge(%{iface_pid: iface_pid, ifsender_pid: ifsender_pid})}
 
       {:error, error} ->
         Logger.error("Can't create link server: #{inspect(error)}")
@@ -35,22 +34,24 @@ defmodule NsgAcs.Link do
 
   @impl true
   def handle_cast(:terminate, state) do
-    {:stop, :normal, state}
+    {:stop, :shutdown, state}
   end
 
   @impl true
-  def handle_info({:ssl, _sslsocket, data}, state = %{iface_sender_pid: iface_sender_pid}) do
+  def handle_info({:ssl, _sslsocket, data}, state = %{ifsender_pid: ifsender_pid}) do
     Logger.debug("SSL RECEIVE #{length(data)} bytes")
-    GenServer.cast(iface_sender_pid, {:send, data})
+    GenServer.cast(ifsender_pid, {:send, data})
     {:noreply, state}
   end
 
   def handle_info({:ssl_closed, _sslsocket}, state) do
-    {:stop, :normal, state}
+    Logger.warn("SSL CLOSED")
+    {:stop, :shutdown, state}
   end
 
   def handle_info({:ssl_error, _sslsocket, _reason}, state) do
-    {:stop, :normal, state}
+    Logger.warn("SSL ERROR")
+    {:stop, :shutdown, state}
   end
 
   def handle_info(msg, state) do

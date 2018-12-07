@@ -24,7 +24,7 @@ defmodule NsgAcs.Iface do
     {:ok, ifsocket} = :tuncer.create(<<>>, [:tun, :no_pi, active: true])
     :tuncer.persist(ifsocket, false)
     name = :tuncer.devname(ifsocket)
-    {:ok, iface_sender_pid} = NsgAcs.IfaceSender.start_link(%{ifsocket: ifsocket})
+    {:ok, ifsender_pid} = NsgAcs.IfaceSender.start_link(%{ifsocket: ifsocket})
 
     with {_, 0} <-
            System.cmd(
@@ -36,7 +36,7 @@ defmodule NsgAcs.Iface do
       state = %{
         ifsocket: ifsocket,
         ifname: name,
-        iface_sender_pid: iface_sender_pid,
+        ifsender_pid: ifsender_pid,
         links_list: [link_params]
       }
 
@@ -58,8 +58,8 @@ defmodule NsgAcs.Iface do
   end
 
   @impl true
-  def handle_call(:get_iface_sender_pid, _from, %{iface_sender_pid: iface_sender_pid} = state) do
-    {:reply, iface_sender_pid, state}
+  def handle_call(:get_ifsender_pid, _from, %{ifsender_pid: ifsender_pid} = state) do
+    {:reply, ifsender_pid, state}
   end
 
   @impl true
@@ -91,8 +91,8 @@ defmodule NsgAcs.Iface do
     )
   end
 
-  def get_iface_sender_pid(pid) do
-    GenServer.call(pid, :get_iface_sender_pid)
+  def get_ifsender_pid(pid) do
+    GenServer.call(pid, :get_ifsender_pid)
   end
 
   def set_link_sender_pid(iface_pid, link_pid, link_sender_pid) do
